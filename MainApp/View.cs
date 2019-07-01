@@ -15,7 +15,7 @@ namespace MainApp
             {
                 string line = null;
                 while ((line = reader.ReadLine()) != null)
-                {
+                { 
                     string[] words = line.Split();
                     if (!wordsList.ContainsKey(words[words.Length -2]))
                     {

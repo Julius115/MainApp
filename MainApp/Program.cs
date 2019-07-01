@@ -34,7 +34,7 @@ namespace MainApp
             {
                 Console.WriteLine(aa);
             }
-
+             
             foreach (string s in containsLettersFromInput)
             {
                 string temp = tempInput.TrimEnd(s.ToArray<char>());
