@@ -16,6 +16,8 @@ namespace Implementation.AnagramSolver
         }
         public IList<string> GetAnagrams(string myWords)
         {
+            myWords = myWords.Replace(" ", String.Empty);
+
             throw new NotImplementedException();
         }
     }

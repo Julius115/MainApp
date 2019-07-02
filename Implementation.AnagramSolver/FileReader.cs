@@ -13,7 +13,7 @@ namespace Implementation.AnagramSolver
         {
             _fileName = fileName;
         }
-        public Dictionary<string, int> Load()
+        public Dictionary<string, int> GetWordsDictionary()
         {
             Dictionary<string, int> wordsList = new Dictionary<string, int>();
 

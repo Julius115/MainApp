@@ -9,11 +9,9 @@ namespace Implementation.AnagramSolver
     public class AnagramSolverSingleWord : IAnagramSolver
     {
         private Dictionary<string, int> _words;
-        //private List<string> _input;
         public AnagramSolverSingleWord (Dictionary<string, int> words)
         {
             _words = words;
-            //_input = input;
         }
 
         public IList<string> GetAnagrams(string myWords)
@@ -24,11 +22,11 @@ namespace Implementation.AnagramSolver
 
             foreach (string s in _input)
             {
-                foreach (KeyValuePair<string, int> k in _words)
+                foreach (var keyValue in _words)
                 {
-                    if (String.Concat(s.OrderBy(c => c)).Equals(String.Concat(k.Key.OrderBy(c => c))) && !anagrams.Contains(k.Key))
+                    if (String.Concat(s.OrderBy(c => c)).Equals(String.Concat(keyValue.Key.OrderBy(c => c))) && !anagrams.Contains(keyValue.Key))
                     {
-                        anagrams.Add(k.Key);
+                        anagrams.Add(keyValue.Key);
                     }
                 }
             }

@@ -6,6 +6,6 @@ namespace Interfaces.AnagramSolver
 {
     public interface IWordRepository
     {
-        Dictionary<string,int> Load();
+        Dictionary<string,int> GetWordsDictionary();
     }
 }
