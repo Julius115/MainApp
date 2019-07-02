@@ -14,7 +14,7 @@ namespace Implementation.AnagramSolver
         {
             _words = words;
         }
-        public IList<string> SolveAnagrams(string myWords)
+        public IList<string> GetAnagrams(string myWords)
         {
             throw new NotImplementedException();
         }

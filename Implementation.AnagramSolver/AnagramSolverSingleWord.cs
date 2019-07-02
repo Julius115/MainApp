@@ -16,7 +16,7 @@ namespace Implementation.AnagramSolver
             //_input = input;
         }
 
-        public IList<string> SolveAnagrams(string myWords)
+        public IList<string> GetAnagrams(string myWords)
         {
             List<string> anagrams = new List<string>();
 

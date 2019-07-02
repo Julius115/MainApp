@@ -21,7 +21,7 @@ namespace MainApp
             Dictionary<string, int> wordsList = reader.Load();
             
             IAnagramSolver solver = new AnagramSolverSingleWord(wordsList);
-            List<string> anagrams = solver.SolveAnagrams("sula liaideta").ToList();
+            List<string> anagrams = solver.GetAnagrams("sula liaideta").ToList();
 
             foreach (string s in anagrams)
             {
