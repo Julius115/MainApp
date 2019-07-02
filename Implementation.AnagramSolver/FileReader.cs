@@ -23,11 +23,17 @@ namespace Implementation.AnagramSolver
                 while ((line = reader.ReadLine()) != null)
                 {
                     string[] words = line.Split();
+                    
+                    if (!wordsList.ContainsKey(words[0]))
+                    {
+                        wordsList.Add(words[0], Int32.Parse(words[words.Length - 1]));
+                    }
                     if (!wordsList.ContainsKey(words[words.Length - 2]))
                     {
                         wordsList.Add(words[words.Length - 2], Int32.Parse(words[words.Length - 1]));
 
                     }
+                    
                 }
             }
             return wordsList;

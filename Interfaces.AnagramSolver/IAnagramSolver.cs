@@ -6,6 +6,6 @@ namespace Interfaces.AnagramSolver
 {
     public interface IAnagramSolver
     {
-        List<string> SolveAnagrams();
+        IList<string> SolveAnagrams(string myWords);
     }
 }

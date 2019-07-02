@@ -9,16 +9,18 @@ namespace Implementation.AnagramSolver
     public class AnagramSolverSingleWord : IAnagramSolver
     {
         private Dictionary<string, int> _words;
-        private List<string> _input;
-        public AnagramSolverSingleWord (Dictionary<string, int> words, List<string> input)
+        //private List<string> _input;
+        public AnagramSolverSingleWord (Dictionary<string, int> words)
         {
             _words = words;
-            _input = input;
+            //_input = input;
         }
 
-        public List<string> SolveAnagrams()
+        public IList<string> SolveAnagrams(string myWords)
         {
             List<string> anagrams = new List<string>();
+
+            List<string> _input = myWords.Split().ToList();
 
             foreach (string s in _input)
             {

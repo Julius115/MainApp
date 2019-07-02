@@ -12,20 +12,26 @@ namespace MainApp
         //static List<List<string>> anagrams = new List<List<string>>();
         static void Main(string[] args)
         {
-            View view = new View();
 
-            List<string> testInput = new List<string>() { "sula", "liaideta"};
+
+            
+            //List<string> testInput = new List<string>() { "sula", "liaideta" };
 
             IWordRepository reader = new FileReader("C:\\Users\\Julius\\Downloads\\zodynas.txt");
             Dictionary<string, int> wordsList = reader.Load();
-
-            IAnagramSolver solver = new AnagramSolverSingleWord(wordsList, testInput);
-            List<string> anagrams = solver.SolveAnagrams();
+            
+            IAnagramSolver solver = new AnagramSolverSingleWord(wordsList);
+            List<string> anagrams = solver.SolveAnagrams("sula liaideta").ToList();
 
             foreach (string s in anagrams)
             {
                 Console.WriteLine(s);
             }
+            
+
+            //List<string> testInput = new List<string>() { "lbasba"};
+            //Dictionary<string, int> wordsList = new Dictionary<string, int>() { { "labas", 1 }, { "l", 1 }, { "aba", 1 }, { "s", 1 }, { "ba", 1 } };
+            //IAnagramSolver solver = new AnagramSolverRecursive(wordsList, testInput);
 
 
             #region temp
