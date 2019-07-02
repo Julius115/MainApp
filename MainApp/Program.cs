@@ -15,6 +15,7 @@ namespace MainApp
             int minLength = int.Parse(ConfigurationManager.AppSettings["minLength"]);
             int maxWords = int.Parse(ConfigurationManager.AppSettings["maxWords"]);
 
+            /*
             IWordRepository reader = new FileReader("C:\\Users\\Julius\\Downloads\\zodynas.txt");
             Dictionary<string, int> wordsList = reader.GetWordsDictionary();
             
@@ -25,11 +26,11 @@ namespace MainApp
             {
                 Console.WriteLine(s);
             }
-            
+            */
 
-            //Dictionary<string, int> wordsList = new Dictionary<string, int>() { { "labas", 1 }, { "l", 1 }, { "aba", 1 }, { "s", 1 }, { "ba", 1 } };
-            //IAnagramSolver solver = new AnagramSolverRecursive(wordsList);
-            //List<string> anagrams = solver.GetAnagrams("lbas ba").ToList();
+            Dictionary<string, int> wordsList = new Dictionary<string, int>() { { "labas", 1 }, { "l", 1 }, { "aba", 1 }, { "s", 1 }, { "ba", 1 } };
+            IAnagramSolver solver = new AnagramSolverRecursive(wordsList);
+            List<string> anagrams = solver.GetAnagrams("lbas ba").ToList();
 
 
         }
