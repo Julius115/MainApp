@@ -17,7 +17,9 @@ namespace MainApp
 
             IWordRepository reader = new FileReader("C:\\Users\\Julius\\Downloads\\zodynas.txt");
 
+
             Dictionary<string, int> wordsList = reader.GetWordsDictionary();
+
             
             IAnagramSolver solver = new AnagramSolverSingleWord(wordsList);
             var anagrams = solver.GetAnagrams("sula liaideta");

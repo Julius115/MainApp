@@ -9,39 +9,41 @@ namespace Implementation.AnagramSolver.Tests
     [TestFixture]
     class AnagramSolverSingleWordTests
     {
-        private Dictionary<string, int> Words;
+        private Dictionary<string, int> words;
 
         [SetUp]
         public void Setup()
         {
-            Words = new Dictionary<string, int>() { { "sula", 1 }, { "sala", 1 } };
+            words = new Dictionary<string, int>() { { "sula", 1 }, { "sala", 1 } };
         }
 
         [Test]
         public void GetAnagrams_ContainsAnagram_ExpectedBehavior()
         {
-            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(Words);
-            List<string> result = anagramSolver.GetAnagrams("alas").ToList();
+            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(words);
+            var result = anagramSolver.GetAnagrams("alas");
 
             Assert.That(result.Count == 1);
-            Assert.That(result[0] == "sala");
+            Assert.That(result.First() == "sala");
         }
 
         [Test]
         public void GetAnagrams_ContainsTwoAnagrams_ExpectedBehavior()
         {
-            Words = new Dictionary<string, int>() { { "sula", 1 }, { "salu", 1 } };
-            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(Words);
-            List<string> result = anagramSolver.GetAnagrams("sula").ToList();
+            var words = new Dictionary<string, int>() { { "sula", 1 }, { "salu", 1 } };
+            var anagramSolver = new AnagramSolverSingleWord(words);
+            var result = anagramSolver.GetAnagrams("sula");
 
             Assert.That(result.Count == 2);
+            Assert.That(result.Contains("sula"));
+            Assert.That(result.Contains("salu"));
         }
 
         [Test]
         public void GetAnagrams_DoesNotContainAnagram_ExpectedBehavior()
         {
-            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(Words);
-            List<string> result = anagramSolver.GetAnagrams("las").ToList();
+            var anagramSolver = new AnagramSolverSingleWord(words);
+            var result = anagramSolver.GetAnagrams("las");
 
             Assert.That(result.Count == 0);
         }

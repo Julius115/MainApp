@@ -9,31 +9,62 @@ namespace Implementation.AnagramSolver.Tests
     [TestFixture]
     class FileReaderTests
     {
-        private string FileName;
-        private string InvalidFileName;
+        private string fileName;
+        private string fileText;
+        private string input;
 
+        
         [SetUp]
         public void Setup()
         {
-            FileName = "C:\\Users\\Julius\\Downloads\\zodynas.txt";
-            InvalidFileName = "C:\\Users\\test.txt";
+            fileName = "C:\\Users\\Julius\\Downloads\\unit.txt";
+            fileText = "lasa a sula 1\n" +
+                       "saul a salu 1";
+            input = "alus";
+
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                sw.WriteLine(fileText);
+            }
+        }
+
+        [TearDown]
+        public void Dispose()
+        {
+            File.Delete(fileName);
         }
        
         [Test]
         public void GetWordsDictionary_ValidFileName_ExpectedBehavior()
         {
-            FileReader FileReader = new FileReader(FileName);
+            FileReader FileReader = new FileReader(fileName);
+
             var result = FileReader.GetWordsDictionary();
 
-            Assert.That(result.Count > 0);
+            Assert.That(result.Count == 4);
+            Assert.That(result.ContainsKey("lasa"));
+            Assert.That(result.ContainsKey("sula"));
+            Assert.That(result.ContainsKey("salu"));
         }
 
         [Test]
-        public void GetWordsDictionary_InvalidFileName_Exception()
+        public void GetWordsDictionary_ValidFileName_WithDuplicates_ExpectedBehavior()
         {
-            FileReader FileReader = new FileReader(InvalidFileName);
+            string fileTextDuplicates = fileText = "lasa a lasa 1\n" +
+                                                   "lasa a lasa 3";
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                sw.WriteLine(fileText);
+            }
 
-            Assert.Throws<FileNotFoundException>(() => FileReader.GetWordsDictionary());
+            FileReader FileReader = new FileReader(fileName);
+
+            var result = FileReader.GetWordsDictionary();
+
+            Assert.That(result.Count == 1);
+            Assert.That(result.ContainsKey("lasa"));
         }
+
+
     }
 }
