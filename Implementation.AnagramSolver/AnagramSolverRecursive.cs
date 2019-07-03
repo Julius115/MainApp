@@ -17,7 +17,7 @@ namespace Implementation.AnagramSolver
         public IList<string> GetAnagrams(string myWords)
         {
             myWords = myWords.Replace(" ", String.Empty);
-            Dictionary<char, int> inputCharsDictionary = new Dictionary<char, int>();
+            var inputCharsDictionary = new Dictionary<char, int>();
             for (int i = 0; i < myWords.Length; i++)
             {
                 if (!inputCharsDictionary.ContainsKey(myWords[i]))
