@@ -7,7 +7,7 @@ using System.Text;
 namespace Implementation.AnagramSolver.Tests
 {
     [TestFixture]
-    class AnagramSolverSingleWordTests
+    class FileReaderTests
     {
         private string FileName;
         private string InvalidFileName;
@@ -20,7 +20,6 @@ namespace Implementation.AnagramSolver.Tests
             InvalidFileName = "C:\\Users\\test.txt";
             FileReader = new FileReader(FileName);
         }
-
        
         [Test]
         public void GetWordsDictionary_ValidFileName_ExpectedBehavior()
@@ -34,6 +33,7 @@ namespace Implementation.AnagramSolver.Tests
         public void GetWordsDictionary_InvalidFileName_Exception()
         {
             FileReader._fileName = InvalidFileName;
+
             Assert.Throws<FileNotFoundException>(() => FileReader.GetWordsDictionary());
         }
     }
