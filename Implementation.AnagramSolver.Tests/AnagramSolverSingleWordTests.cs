@@ -9,11 +9,18 @@ namespace Implementation.AnagramSolver.Tests
     [TestFixture]
     class AnagramSolverSingleWordTests
     {
+        private Dictionary<string, int> Words;
+
+        [SetUp]
+        public void Setup()
+        {
+            Words = new Dictionary<string, int>() { { "sula", 1 }, { "sala", 1 } };
+        }
+
         [Test]
         public void GetAnagrams_ContainsAnagram_ExpectedBehavior()
         {
-            Dictionary<string, int> words = new Dictionary<string, int>() { { "sula", 1 }, { "sala", 1 } };
-            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(words);
+            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(Words);
             List<string> result = anagramSolver.GetAnagrams("alas").ToList();
 
             Assert.That(result.Count == 1);
@@ -23,8 +30,8 @@ namespace Implementation.AnagramSolver.Tests
         [Test]
         public void GetAnagrams_ContainsTwoAnagrams_ExpectedBehavior()
         {
-            Dictionary<string, int> words = new Dictionary<string, int>() { { "sula", 1 }, { "usla", 1 } };
-            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(words);
+            Words = new Dictionary<string, int>() { { "sula", 1 }, { "salu", 1 } };
+            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(Words);
             List<string> result = anagramSolver.GetAnagrams("sula").ToList();
 
             Assert.That(result.Count == 2);
@@ -33,8 +40,7 @@ namespace Implementation.AnagramSolver.Tests
         [Test]
         public void GetAnagrams_DoesNotContainAnagram_ExpectedBehavior()
         {
-            Dictionary<string, int> words = new Dictionary<string, int>() { { "sula", 1 }, { "sala", 1 } };
-            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(words);
+            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(Words);
             List<string> result = anagramSolver.GetAnagrams("las").ToList();
 
             Assert.That(result.Count == 0);

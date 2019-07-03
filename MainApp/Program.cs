@@ -15,12 +15,12 @@ namespace MainApp
             int minLength = int.Parse(ConfigurationManager.AppSettings["minLength"]);
             int maxWords = int.Parse(ConfigurationManager.AppSettings["maxWords"]);
 
-            
             IWordRepository reader = new FileReader("C:\\Users\\Julius\\Downloads\\zodynas.txt");
+
             Dictionary<string, int> wordsList = reader.GetWordsDictionary();
             
             IAnagramSolver solver = new AnagramSolverSingleWord(wordsList);
-            List<string> anagrams = solver.GetAnagrams("sula liaideta").ToList();
+            var anagrams = solver.GetAnagrams("sula liaideta");
 
             foreach (string s in anagrams)
             {
