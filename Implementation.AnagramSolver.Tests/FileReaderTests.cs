@@ -11,19 +11,18 @@ namespace Implementation.AnagramSolver.Tests
     {
         private string FileName;
         private string InvalidFileName;
-        private FileReader FileReader;
 
         [SetUp]
         public void Setup()
         {
             FileName = "C:\\Users\\Julius\\Downloads\\zodynas.txt";
             InvalidFileName = "C:\\Users\\test.txt";
-            FileReader = new FileReader(FileName);
         }
        
         [Test]
         public void GetWordsDictionary_ValidFileName_ExpectedBehavior()
         {
+            FileReader FileReader = new FileReader(FileName);
             var result = FileReader.GetWordsDictionary();
 
             Assert.That(result.Count > 0);
@@ -32,7 +31,7 @@ namespace Implementation.AnagramSolver.Tests
         [Test]
         public void GetWordsDictionary_InvalidFileName_Exception()
         {
-            FileReader._fileName = InvalidFileName;
+            FileReader FileReader = new FileReader(InvalidFileName);
 
             Assert.Throws<FileNotFoundException>(() => FileReader.GetWordsDictionary());
         }
