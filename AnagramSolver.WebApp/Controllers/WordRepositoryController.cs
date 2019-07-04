@@ -11,22 +11,18 @@ namespace AnagramSolver.WebApp.Controllers
 {
     public class WordRepositoryController : Controller
     {
-        //private AnagramViewModel anagramViewModel = new AnagramViewModel();
-        private Dictionary<string, int> dictionary = new Dictionary<string, int>();
+        private readonly IWordRepository _wordRepository;
+
+        public WordRepositoryController(IWordRepository wordRepository)
+        {
+            _wordRepository = wordRepository;
+        }
+
         public IActionResult ReadDictionary(int page = 0)
         {
             ViewBag.Page = page;
 
-            IWordRepository reader = new FileWordRepository("zodynas.txt");
-            dictionary = reader.GetWordsDictionary();
-            //TODO: change AnagramViewModel to new ViewModel
-            AnagramViewModel.InputWords = dictionary.Keys.ToList();
-
-
-            AnagramViewModel.InputWords = dictionary.Keys.ToList().Skip(page * 100).Take(100).ToList();
-
-
-            return View(AnagramViewModel.InputWords);
+            return View(_wordRepository.GetWords(page, 100));
         }
         public IActionResult Index()
         {

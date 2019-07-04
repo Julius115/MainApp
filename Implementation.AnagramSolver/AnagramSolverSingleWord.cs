@@ -9,6 +9,7 @@ namespace AnagramSolver.BusinessLogic
     public class AnagramSolverSingleWord : IAnagramSolver
     {
         private Dictionary<string, int> _words;
+
         public AnagramSolverSingleWord (Dictionary<string, int> words)
         {
             _words = words;
@@ -20,6 +21,7 @@ namespace AnagramSolver.BusinessLogic
 
             List<string> _input = myWords.Split().ToList();
 
+            //foreach (string s in _input)
             foreach (string s in _input)
             {
                 foreach (var keyValue in _words)

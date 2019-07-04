@@ -14,9 +14,12 @@ namespace AnagramSolver.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly IAnagramSolver _anagramSolver;
-        public HomeController(IAnagramSolver anagramSolver)
+        private readonly IWordRepository _wordRepository;
+
+        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository)
         {
             _anagramSolver = anagramSolver;
+            _wordRepository = wordRepository;
         }
         public IActionResult Index()
         {
@@ -26,14 +29,12 @@ namespace AnagramSolver.WebApp.Controllers
         [Route("Home/Index/{word?}")]
         public IActionResult Index(string word)
         {
-            //IWordRepository reader = new FileWordRepository("zodynas.txt");
-            //var wordsDictionary = reader.GetWordsDictionary();
-            //IAnagramSolver solver = new AnagramSolverSingleWord(wordsDictionary);
-
+            
             var anagramViewModel = new AnagramViewModel();
 
             anagramViewModel.InputWords = _anagramSolver.GetAnagrams(word).ToList();
 
+            // anagramSolver _words is null
             return View(anagramViewModel.InputWords);
         }
 
@@ -79,10 +80,10 @@ namespace AnagramSolver.WebApp.Controllers
             //var wordsDictionary = reader.GetWordsDictionary();
             IAnagramSolver solver = new AnagramSolverSingleWord(WordsDictionaryModel.WordsDictionary);
 
-            //var anagramViewModel = new AnagramViewModel();
-            AnagramViewModel.InputWords = solver.GetAnagrams(input).ToList();
+            var anagramViewModel = new AnagramViewModel();
+            anagramViewModel.InputWords = solver.GetAnagrams(input).ToList();
 
-            return View(AnagramViewModel.InputWords);
+            return View(anagramViewModel.InputWords);
         }
 
         public IActionResult Contact()
