@@ -1,0 +1,26 @@
+﻿@model AnagramViewModel
+
+@{
+    ViewData["Title"] = "Form";
+}
+
+<h2>Form</h2>
+
+<form method="post" action="@Url.Action("Form", "Home")">
+    <label>Input word</label>
+    <input type="text" , name="Input" />
+    <br>
+    <label>Anagrams</label>
+    <ul>
+@if (Model != null)
+{
+    @foreach (string s in Model.InputWords)
+    {
+        <li>
+            @s
+        </li>
+    }
+}
+</ul>
+    
+</form>

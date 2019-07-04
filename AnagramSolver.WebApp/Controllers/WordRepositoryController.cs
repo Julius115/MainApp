@@ -15,6 +15,7 @@ namespace AnagramSolver.WebApp.Controllers
         private Dictionary<string, int> dictionary = new Dictionary<string, int>();
         public IActionResult ReadDictionary(int page = 0)
         {
+            ViewBag.Page = page;
 
             IWordRepository reader = new FileWordRepository("zodynas.txt");
             dictionary = reader.GetWordsDictionary();

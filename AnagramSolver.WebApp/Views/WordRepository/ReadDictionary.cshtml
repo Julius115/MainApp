@@ -9,7 +9,15 @@
 
 @foreach (string s in Model.InputWords)
 {
-    <p>@s</p>
+    @Html.ActionLink(s, "Index", "Home", new { word = s })
+    <br \>
 }
-
-@Html.ActionLink("Load next 100 elements", "ReadDictionary", "WordRepository", new { page = 1})
+<br \>
+@if (ViewBag.Page > 0)
+{
+    @Html.ActionLink("Previous Page", "ReadDictionary", "WordRepository", new { page = ViewBag.Page - 1 })
+}
+&nbsp;
+@(ViewBag.Page + 1)
+&nbsp;
+@Html.ActionLink("Next Page", "ReadDictionary", "WordRepository", new { page = ViewBag.Page + 1 })
