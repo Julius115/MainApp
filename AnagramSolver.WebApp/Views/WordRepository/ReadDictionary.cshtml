@@ -1,0 +1,15 @@
+﻿@model AnagramSolver.WebApp.Models.AnagramViewModel
+
+@{
+    ViewData["Title"] = "ReadDictionary";
+}
+
+<h2>ReadDictionary</h2>
+
+
+@foreach (string s in Model.InputWords)
+{
+    <p>@s</p>
+}
+
+@Html.ActionLink("Load next 100 elements", "ReadDictionary", "WordRepository", new { page = 1})

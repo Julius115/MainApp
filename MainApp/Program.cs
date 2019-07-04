@@ -12,16 +12,13 @@ namespace AnagramSolver.Console
     {
         static void Main(string[] args)
         {
-
             int minLength = int.Parse(ConfigurationManager.AppSettings["minLength"]);
             int maxWords = int.Parse(ConfigurationManager.AppSettings["maxWords"]);
 
             IWordRepository reader = new FileWordRepository("zodynas.txt");
 
-
             Dictionary<string, int> wordsList = reader.GetWordsDictionary();
 
-            
             IAnagramSolver solver = new AnagramSolverSingleWord(wordsList);
             var anagrams = solver.GetAnagrams("sula liaideta");
 
