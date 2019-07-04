@@ -3,5 +3,8 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-<h1>@Model.InputWords.First()</h1>
+<h1>Anagrams:</h1>
+@foreach (string s in Model.InputWords)
+{
+    <p>@s</p>
+}
