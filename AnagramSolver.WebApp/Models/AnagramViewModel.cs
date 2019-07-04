@@ -7,11 +7,8 @@ namespace AnagramSolver.WebApp.Models
 {
     public class AnagramViewModel
     {
-        public List<string> InputWords { get; set; }
+        public List<string> InputWords { get; set; } = new List<string>();
 
-        public AnagramViewModel()
-        {
-            InputWords = new List<string>();
-        }
+        public int PageNumber { get; set; }
     }
 }

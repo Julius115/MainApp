@@ -1,4 +1,4 @@
-﻿@model AnagramViewModel
+﻿@model List<string>
 
 @{
     ViewData["Title"] = "Form";
@@ -9,18 +9,22 @@
 <form method="post" action="@Url.Action("Form", "Home")">
     <label>Input word</label>
     <input type="text" , name="Input" />
-    <br>
+    <br />
+    <button type="submit">Submit</button>
+    <br />
     <label>Anagrams</label>
     <ul>
-@if (Model != null)
-{
-    @foreach (string s in Model.InputWords)
-    {
-        <li>
-            @s
-        </li>
-    }
-}
-</ul>
-    
+        @if (Model != null)
+        {
+            @foreach (string s in Model)
+            {
+                <li>
+                    @s
+                </li>
+            }
+        }
+
+    </ul>
+
+
 </form>

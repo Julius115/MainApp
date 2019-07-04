@@ -1,4 +1,4 @@
-﻿@model AnagramSolver.WebApp.Models.AnagramViewModel
+﻿@model List<string>
 
 @{
     ViewData["Title"] = "ReadDictionary";
@@ -7,12 +7,12 @@
 <h2>ReadDictionary</h2>
 
 
-@foreach (string s in Model.InputWords)
+@foreach (string s in Model)
 {
     @Html.ActionLink(s, "Index", "Home", new { word = s })
-    <br \>
+    <br />
 }
-<br \>
+<br />
 @if (ViewBag.Page > 0)
 {
     @Html.ActionLink("Previous Page", "ReadDictionary", "WordRepository", new { page = ViewBag.Page - 1 })

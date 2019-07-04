@@ -1,10 +1,10 @@
-﻿@model  AnagramViewModel
+﻿@model  List<string>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 <h1>Anagrams:</h1>
-@foreach (string s in Model.InputWords)
+@foreach (string s in Model)
 {
     <p>@s</p>
 }

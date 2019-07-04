@@ -11,7 +11,7 @@ namespace AnagramSolver.WebApp.Controllers
 {
     public class WordRepositoryController : Controller
     {
-        private AnagramViewModel anagramViewModel = new AnagramViewModel();
+        //private AnagramViewModel anagramViewModel = new AnagramViewModel();
         private Dictionary<string, int> dictionary = new Dictionary<string, int>();
         public IActionResult ReadDictionary(int page = 0)
         {
@@ -19,14 +19,14 @@ namespace AnagramSolver.WebApp.Controllers
 
             IWordRepository reader = new FileWordRepository("zodynas.txt");
             dictionary = reader.GetWordsDictionary();
-
-            anagramViewModel.InputWords = dictionary.Keys.ToList();
-
-
-            anagramViewModel.InputWords = dictionary.Keys.ToList().Skip(page * 100).Take(100).ToList();
+            //TODO: change AnagramViewModel to new ViewModel
+            AnagramViewModel.InputWords = dictionary.Keys.ToList();
 
 
-            return View(anagramViewModel);
+            AnagramViewModel.InputWords = dictionary.Keys.ToList().Skip(page * 100).Take(100).ToList();
+
+
+            return View(AnagramViewModel.InputWords);
         }
         public IActionResult Index()
         {

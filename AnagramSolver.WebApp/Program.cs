@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AnagramSolver.BusinessLogic;
+using AnagramSolver.Contracts;
+using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +17,9 @@ namespace AnagramSolver.WebApp
     {
         public static void Main(string[] args)
         {
+            IWordRepository reader = new FileWordRepository("zodynas.txt");
+            WordsDictionaryModel.WordsDictionary = reader.GetWordsDictionary();
+
             CreateWebHostBuilder(args).Build().Run();
         }
 

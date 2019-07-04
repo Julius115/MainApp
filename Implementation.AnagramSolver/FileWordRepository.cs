@@ -8,11 +8,15 @@ namespace AnagramSolver.BusinessLogic
     public class FileWordRepository : IWordRepository
     {
         public string _fileName;
+        //private Dictionary _
+        //TODO: implement Singleton https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/dependency-injection?view=aspnetcore-2.2
 
         public FileWordRepository(string fileName)
         {
             _fileName = fileName;
         }
+
+        // TODO: add method getWords(skip, take)
         public Dictionary<string, int> GetWordsDictionary()
         {
             Dictionary<string, int> wordsList = new Dictionary<string, int>();
