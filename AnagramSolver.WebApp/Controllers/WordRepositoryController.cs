@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AnagramSolver.BusinessLogic;
+using AnagramSolver.Contracts;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,8 @@ namespace AnagramSolver.WebApp.Controllers
         public IActionResult ReadDictionary(int page = 0)
         {
 
-            FileWordRepository fileWordRepository = new FileWordRepository("zodynas.txt");
-            dictionary = fileWordRepository.GetWordsDictionary();
+            IWordRepository reader = new FileWordRepository("zodynas.txt");
+            dictionary = reader.GetWordsDictionary();
 
             anagramViewModel.InputWords = dictionary.Keys.ToList();
 

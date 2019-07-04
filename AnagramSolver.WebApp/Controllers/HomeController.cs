@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AnagramSolver.WebApp.Models;
 using AnagramSolver.BusinessLogic;
+using AnagramSolver.Contracts;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -19,13 +20,12 @@ namespace AnagramSolver.WebApp.Controllers
                 return new EmptyResult();
             }
 
-            FileWordRepository fileWordRepository = new FileWordRepository("zodynas.txt");
-            Dictionary<string, int> dictionary = fileWordRepository.GetWordsDictionary();
+            IWordRepository reader = new FileWordRepository("zodynas.txt");
+            var wordsDictionary = reader.GetWordsDictionary();
+            IAnagramSolver solver = new AnagramSolverSingleWord(wordsDictionary);
 
-            AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(dictionary);
-
-            AnagramViewModel anagramViewModel = new AnagramViewModel();
-            anagramViewModel.InputWords = anagramSolver.GetAnagrams(word).ToList();
+            var anagramViewModel = new AnagramViewModel();
+            anagramViewModel.InputWords = solver.GetAnagrams(word).ToList();
 
             return View(anagramViewModel);
         }
