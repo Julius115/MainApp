@@ -29,13 +29,7 @@ namespace AnagramSolver.WebApp.Controllers
         [Route("Home/Index/{word?}")]
         public IActionResult Index(string word)
         {
-            
-            var anagramViewModel = new AnagramViewModel();
-
-            anagramViewModel.InputWords = _anagramSolver.GetAnagrams(word).ToList();
-
-            // anagramSolver _words is null
-            return View(anagramViewModel.InputWords);
+            return View(_anagramSolver.GetAnagrams(word).ToList());
         }
 
         public IActionResult About()
@@ -47,7 +41,6 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult WriteToFile(string input)
         {
-            
             if (String.IsNullOrEmpty(input))
             {
                 return View();
@@ -55,10 +48,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             List<string> inputList = input.Split().ToList();
 
-            IWordRepository reader = new FileWordRepository("zodynas.txt");
-            var wordsDictionary = reader.GetWordsDictionary();
-
-            if (!wordsDictionary.Keys.Contains(inputList.First()))
+            if (!_wordRepository.GetWordsDictionary().Keys.Contains(inputList.First()))
             {
                 using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
                 {
@@ -76,14 +66,7 @@ namespace AnagramSolver.WebApp.Controllers
                 return View();
             }
 
-            //IWordRepository reader = new FileWordRepository("zodynas.txt");
-            //var wordsDictionary = reader.GetWordsDictionary();
-            IAnagramSolver solver = new AnagramSolverSingleWord(WordsDictionaryModel.WordsDictionary);
-
-            var anagramViewModel = new AnagramViewModel();
-            anagramViewModel.InputWords = solver.GetAnagrams(input).ToList();
-
-            return View(anagramViewModel.InputWords);
+            return View(_anagramSolver.GetAnagrams(input).ToList());
         }
 
         public IActionResult Contact()

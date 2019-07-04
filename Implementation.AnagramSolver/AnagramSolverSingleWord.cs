@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -10,9 +11,32 @@ namespace AnagramSolver.BusinessLogic
     {
         private Dictionary<string, int> _words;
 
-        public AnagramSolverSingleWord (Dictionary<string, int> words)
+        public AnagramSolverSingleWord ()
         {
-            _words = words;
+            
+            Dictionary<string, int> wordsList = new Dictionary<string, int>();
+
+            using (StreamReader reader = new StreamReader("zodynas.txt"))
+            {
+                string line = null;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] words = line.Split();
+
+                    if (!wordsList.ContainsKey(words[0]))
+                    {
+                        wordsList.Add(words[0], Int32.Parse(words[words.Length - 1]));
+                    }
+                    if (!wordsList.ContainsKey(words[words.Length - 2]))
+                    {
+                        wordsList.Add(words[words.Length - 2], Int32.Parse(words[words.Length - 1]));
+
+                    }
+
+                }
+            }
+
+            _words = wordsList;
         }
 
         public IList<string> GetAnagrams(string myWords)

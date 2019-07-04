@@ -45,7 +45,6 @@ namespace AnagramSolver.BusinessLogic
             return _dictionary.Keys.ToList().Skip(skip * take).Take(take).ToList();
         }
 
-        // TODO: add method getWords(skip, take)
         public Dictionary<string, int> GetWordsDictionary()
         {
             return _dictionary;
