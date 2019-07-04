@@ -10,7 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Implementation.AnagramSolver\Implementation.AnagramSolver.csproj" />
+    <ProjectReference Include="..\Implementation.AnagramSolver\AnagramSolver.BusinessLogic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="zodynas.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

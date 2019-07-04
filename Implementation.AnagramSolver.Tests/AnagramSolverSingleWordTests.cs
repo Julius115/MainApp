@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Implementation.AnagramSolver.Tests
+namespace AnagramSolver.BusinessLogic.Tests
 {
     [TestFixture]
     class AnagramSolverSingleWordTests

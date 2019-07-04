@@ -1,15 +1,15 @@
-﻿using Interfaces.AnagramSolver;
+﻿using AnagramSolver.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Implementation.AnagramSolver
+namespace AnagramSolver.BusinessLogic
 {
-    public class FileReader : IWordRepository
+    public class FileWordRepository : IWordRepository
     {
         public string _fileName;
 
-        public FileReader(string fileName)
+        public FileWordRepository(string fileName)
         {
             _fileName = fileName;
         }

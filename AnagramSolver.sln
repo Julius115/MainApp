@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainApp", "MainApp\MainApp.csproj", "{EFD78C46-B022-4176-A86A-13FE1323B3A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.Console", "MainApp\AnagramSolver.Console.csproj", "{EFD78C46-B022-4176-A86A-13FE1323B3A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Implementation.AnagramSolver", "Implementation.AnagramSolver\Implementation.AnagramSolver.csproj", "{F62CE3CA-E843-4B20-AB24-D5B98B2F2830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.BusinessLogic", "Implementation.AnagramSolver\AnagramSolver.BusinessLogic.csproj", "{F62CE3CA-E843-4B20-AB24-D5B98B2F2830}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces.AnagramSolver", "Interfaces.AnagramSolver\Interfaces.AnagramSolver.csproj", "{3F9EA15E-3CDD-49FC-9C6F-BD3768897399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.Contracts", "Interfaces.AnagramSolver\AnagramSolver.Contracts.csproj", "{3F9EA15E-3CDD-49FC-9C6F-BD3768897399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Implementation.AnagramSolver.Tests", "Implementation.AnagramSolver.Tests\Implementation.AnagramSolver.Tests.csproj", "{644C8ECD-32D7-4D61-B06D-4DCE889C6671}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.BusinessLogic.Tests", "Implementation.AnagramSolver.Tests\AnagramSolver.BusinessLogic.Tests.csproj", "{644C8ECD-32D7-4D61-B06D-4DCE889C6671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

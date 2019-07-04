@@ -1,10 +1,10 @@
-﻿using Interfaces.AnagramSolver;
+﻿using AnagramSolver.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Implementation.AnagramSolver
+namespace AnagramSolver.BusinessLogic
 {
     public class AnagramSolverSingleWord : IAnagramSolver
     {

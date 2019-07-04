@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Interfaces.AnagramSolver
+namespace AnagramSolver.Contracts
 {
     public interface IWordRepository
     {

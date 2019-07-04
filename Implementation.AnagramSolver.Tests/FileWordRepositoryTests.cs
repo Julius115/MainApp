@@ -4,25 +4,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Implementation.AnagramSolver.Tests
+namespace AnagramSolver.BusinessLogic.Tests
 {
     [TestFixture]
-    class FileReaderTests
+    class FileWordRepositoryTests
     {
         private string fileName;
         private string fileText;
         private string fileTextDuplicates;
-        private string input;
         
         [SetUp]
         public void Setup()
         {
-            fileName = "C:\\Users\\Julius\\Downloads\\unit.txt";
+            fileName = "unit.txt";
             fileText = "lasa a sula 1\n" +
                        "saul a salu 1";
             fileTextDuplicates = "lasa a lasa 1\n" +
                                  "lasa a lasa 3";
-            input = "alus";
         }
 
         [TearDown]
@@ -39,7 +37,7 @@ namespace Implementation.AnagramSolver.Tests
                 sw.WriteLine(fileText);
             }
 
-            FileReader FileReader = new FileReader(fileName);
+            FileWordRepository FileReader = new FileWordRepository(fileName);
             var result = FileReader.GetWordsDictionary();
 
             Assert.That(result.Count == 4);
@@ -56,7 +54,7 @@ namespace Implementation.AnagramSolver.Tests
                 sw.WriteLine(fileTextDuplicates);
             }
 
-            FileReader FileReader = new FileReader(fileName);
+            FileWordRepository FileReader = new FileWordRepository(fileName);
 
             var result = FileReader.GetWordsDictionary();
 
