@@ -11,8 +11,8 @@ namespace Implementation.AnagramSolver.Tests
     {
         private string fileName;
         private string fileText;
+        private string fileTextDuplicates;
         private string input;
-
         
         [SetUp]
         public void Setup()
@@ -20,12 +20,9 @@ namespace Implementation.AnagramSolver.Tests
             fileName = "C:\\Users\\Julius\\Downloads\\unit.txt";
             fileText = "lasa a sula 1\n" +
                        "saul a salu 1";
+            fileTextDuplicates = "lasa a lasa 1\n" +
+                                 "lasa a lasa 3";
             input = "alus";
-
-            using (StreamWriter sw = new StreamWriter(fileName))
-            {
-                sw.WriteLine(fileText);
-            }
         }
 
         [TearDown]
@@ -35,10 +32,14 @@ namespace Implementation.AnagramSolver.Tests
         }
        
         [Test]
-        public void GetWordsDictionary_ValidFileName_ExpectedBehavior()
+        public void GetWordsDictionary_ValidFileName_ReturnsDictionary()
         {
-            FileReader FileReader = new FileReader(fileName);
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                sw.WriteLine(fileText);
+            }
 
+            FileReader FileReader = new FileReader(fileName);
             var result = FileReader.GetWordsDictionary();
 
             Assert.That(result.Count == 4);
@@ -48,13 +49,11 @@ namespace Implementation.AnagramSolver.Tests
         }
 
         [Test]
-        public void GetWordsDictionary_ValidFileName_WithDuplicates_ExpectedBehavior()
+        public void GetWordsDictionary_ValidFileName_WithDuplicates_ReturnsDictionaryWithoutDuplicates()
         {
-            string fileTextDuplicates = fileText = "lasa a lasa 1\n" +
-                                                   "lasa a lasa 3";
             using (StreamWriter sw = new StreamWriter(fileName))
             {
-                sw.WriteLine(fileText);
+                sw.WriteLine(fileTextDuplicates);
             }
 
             FileReader FileReader = new FileReader(fileName);
@@ -64,7 +63,5 @@ namespace Implementation.AnagramSolver.Tests
             Assert.That(result.Count == 1);
             Assert.That(result.ContainsKey("lasa"));
         }
-
-
     }
 }

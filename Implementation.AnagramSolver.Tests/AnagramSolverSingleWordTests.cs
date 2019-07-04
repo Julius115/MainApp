@@ -18,7 +18,7 @@ namespace Implementation.AnagramSolver.Tests
         }
 
         [Test]
-        public void GetAnagrams_ContainsAnagram_ExpectedBehavior()
+        public void GetAnagrams_ContainsAnagram_ReturnsOneAnagram()
         {
             AnagramSolverSingleWord anagramSolver = new AnagramSolverSingleWord(words);
             var result = anagramSolver.GetAnagrams("alas");
@@ -28,7 +28,7 @@ namespace Implementation.AnagramSolver.Tests
         }
 
         [Test]
-        public void GetAnagrams_ContainsTwoAnagrams_ExpectedBehavior()
+        public void GetAnagrams_ContainsMultipleAnagrams_ReturnsMultipleAnagrams()
         {
             var words = new Dictionary<string, int>() { { "sula", 1 }, { "salu", 1 } };
             var anagramSolver = new AnagramSolverSingleWord(words);
@@ -40,7 +40,7 @@ namespace Implementation.AnagramSolver.Tests
         }
 
         [Test]
-        public void GetAnagrams_DoesNotContainAnagram_ExpectedBehavior()
+        public void GetAnagrams_DoesNotContainAnagram_ReturnsEmptyList()
         {
             var anagramSolver = new AnagramSolverSingleWord(words);
             var result = anagramSolver.GetAnagrams("las");
