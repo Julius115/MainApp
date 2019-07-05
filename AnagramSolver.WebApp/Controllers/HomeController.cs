@@ -26,6 +26,12 @@ namespace AnagramSolver.WebApp.Controllers
             return View("Empty");
         }
 
+        [HttpGet]
+        public List<string> GetAnagrams(string id)
+        {
+            return _anagramSolver.GetAnagrams(id).ToList();
+        }
+
         [Route("Home/Index/{word?}")]
         public IActionResult Index(string word)
         {
