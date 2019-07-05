@@ -29,6 +29,12 @@ namespace AnagramSolver.WebApp.Controllers
         [Route("Home/Index/{word?}")]
         public IActionResult Index(string word)
         {
+            if (word == null)
+            {
+                return View("Empty");
+                //RouteData.Values.Remove("id");
+                //return RedirectToAction("Index");
+            }
             return View(_anagramSolver.GetAnagrams(word).ToList());
         }
 

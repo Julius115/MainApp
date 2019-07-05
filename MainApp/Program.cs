@@ -19,7 +19,7 @@ namespace AnagramSolver.Console
 
             Dictionary<string, int> wordsList = reader.GetWordsDictionary();
 
-            IAnagramSolver solver = new AnagramSolverSingleWord(wordsList);
+            IAnagramSolver solver = new AnagramSolverSingleWord(reader);
             var anagrams = solver.GetAnagrams("sula liaideta");
 
             foreach (string s in anagrams)

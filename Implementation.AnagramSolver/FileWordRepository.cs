@@ -40,6 +40,11 @@ namespace AnagramSolver.BusinessLogic
             return _dictionary.Keys.ToList().Skip(skip * take).Take(take).ToList();
         }
 
+        public void AddWord(KeyValuePair<string, int> keyValue)
+        {
+            ((ICollection<KeyValuePair<string, int>>)_dictionary).Add(keyValue);
+        }
+
         public Dictionary<string, int> GetWordsDictionary()
         {
             return _dictionary;
