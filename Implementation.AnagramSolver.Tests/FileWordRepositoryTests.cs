@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using AnagramSolver.Contracts;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,9 @@ namespace AnagramSolver.BusinessLogic.Tests
         private string fileName;
         private string fileText;
         private string fileTextDuplicates;
-        
+
+        private IWordRepository _wordRepository;
+
         [SetUp]
         public void Setup()
         {
@@ -37,8 +40,8 @@ namespace AnagramSolver.BusinessLogic.Tests
                 sw.WriteLine(fileText);
             }
 
-            FileWordRepository FileReader = new FileWordRepository(fileName);
-            var result = FileReader.GetWordsDictionary();
+            _wordRepository = new FileWordRepository(@"C:\Users\Julius\source\repos\MainApp\Implementation.AnagramSolver.Tests\bin\Debug\netcoreapp2.1\" + fileName);
+            var result = _wordRepository.GetWordsDictionary();
 
             Assert.That(result.Count == 4);
             Assert.That(result.ContainsKey("lasa"));
@@ -54,9 +57,9 @@ namespace AnagramSolver.BusinessLogic.Tests
                 sw.WriteLine(fileTextDuplicates);
             }
 
-            FileWordRepository FileReader = new FileWordRepository(fileName);
+            _wordRepository = new FileWordRepository(@"C:\Users\Julius\source\repos\MainApp\Implementation.AnagramSolver.Tests\bin\Debug\netcoreapp2.1\" + fileName);
 
-            var result = FileReader.GetWordsDictionary();
+            var result = _wordRepository.GetWordsDictionary();
 
             Assert.That(result.Count == 1);
             Assert.That(result.ContainsKey("lasa"));
