@@ -34,8 +34,9 @@ namespace AnagramSolver.WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddTransient<IAnagramSolver>(x => new AnagramSolverSingleWord());
+            
             services.AddSingleton<IWordRepository>(x => new FileWordRepository("zodynas.txt"));
+            services.AddTransient<IAnagramSolver, AnagramSolverSingleWord>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

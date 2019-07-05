@@ -11,32 +11,9 @@ namespace AnagramSolver.BusinessLogic
     {
         private Dictionary<string, int> _words;
 
-        public AnagramSolverSingleWord ()
+        public AnagramSolverSingleWord (IWordRepository wordRepository)
         {
-            
-            Dictionary<string, int> wordsList = new Dictionary<string, int>();
-
-            using (StreamReader reader = new StreamReader("zodynas.txt"))
-            {
-                string line = null;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] words = line.Split();
-
-                    if (!wordsList.ContainsKey(words[0]))
-                    {
-                        wordsList.Add(words[0], Int32.Parse(words[words.Length - 1]));
-                    }
-                    if (!wordsList.ContainsKey(words[words.Length - 2]))
-                    {
-                        wordsList.Add(words[words.Length - 2], Int32.Parse(words[words.Length - 1]));
-
-                    }
-
-                }
-            }
-
-            _words = wordsList;
+            _words = wordRepository.GetWordsDictionary();
         }
 
         public IList<string> GetAnagrams(string myWords)
@@ -45,7 +22,6 @@ namespace AnagramSolver.BusinessLogic
 
             List<string> _input = myWords.Split().ToList();
 
-            //foreach (string s in _input)
             foreach (string s in _input)
             {
                 foreach (var keyValue in _words)

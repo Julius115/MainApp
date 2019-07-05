@@ -10,9 +10,6 @@ namespace AnagramSolver.BusinessLogic
     {
         private Dictionary<string, int> _dictionary;
 
-        //private Dictionary _
-        //TODO: implement Singleton https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/dependency-injection?view=aspnetcore-2.2
-
         public FileWordRepository(string fileName)
         {
             Dictionary<string, int> wordsList = new Dictionary<string, int>();
@@ -31,9 +28,7 @@ namespace AnagramSolver.BusinessLogic
                     if (!wordsList.ContainsKey(words[words.Length - 2]))
                     {
                         wordsList.Add(words[words.Length - 2], Int32.Parse(words[words.Length - 1]));
-
                     }
-
                 }
             }
 

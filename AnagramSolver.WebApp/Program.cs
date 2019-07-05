@@ -17,7 +17,7 @@ namespace AnagramSolver.WebApp
     {
         public static void Main(string[] args)
         {
-            IWordRepository reader = new FileWordRepository("zodynas.txt");
+            //IWordRepository reader = new FileWordRepository("zodynas.txt");
             //IAnagramSolver anagramSolver = new AnagramSolverSingleWord(reader.GetWordsDictionary());
 
             CreateWebHostBuilder(args).Build().Run();
@@ -28,3 +28,4 @@ namespace AnagramSolver.WebApp
                 .UseStartup<Startup>();
     }
 }
+  

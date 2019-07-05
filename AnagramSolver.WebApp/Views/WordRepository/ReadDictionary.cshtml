@@ -1,4 +1,4 @@
-﻿@model List<string>
+﻿@model WordRepositoryViewModel
 
 @{
     ViewData["Title"] = "ReadDictionary";
@@ -7,17 +7,17 @@
 <h2>ReadDictionary</h2>
 
 
-@foreach (string s in Model)
+@foreach (string s in Model.Words)
 {
     @Html.ActionLink(s, "Index", "Home", new { word = s })
     <br />
 }
 <br />
-@if (ViewBag.Page > 0)
+@if (Model.PageNumber > 0)
 {
-    @Html.ActionLink("Previous Page", "ReadDictionary", "WordRepository", new { page = ViewBag.Page - 1 })
+    @Html.ActionLink("Previous Page", "ReadDictionary", "WordRepository", new { page = Model.PageNumber - 1 })
 }
 &nbsp;
 @(ViewBag.Page + 1)
 &nbsp;
-@Html.ActionLink("Next Page", "ReadDictionary", "WordRepository", new { page = ViewBag.Page + 1 })
+@Html.ActionLink("Next Page", "ReadDictionary", "WordRepository", new { page = Model.PageNumber + 1 })

@@ -20,9 +20,9 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult ReadDictionary(int page = 0)
         {
-            ViewBag.Page = page;
+            WordRepositoryViewModel wordRepository = new WordRepositoryViewModel(_wordRepository.GetWords(page, 100), page);
 
-            return View(_wordRepository.GetWords(page, 100));
+            return View(wordRepository);
         }
         public IActionResult Index()
         {

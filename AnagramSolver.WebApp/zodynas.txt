@@ -128058,3 +128058,4 @@ Zuzana	tikr. dkt	Zuzana	1
 žvyrkelis	dkt	žvyrkelį	1
 test sk test 2
 test1 sk test 3
+test4 sk test 2
