@@ -8,6 +8,6 @@ namespace AnagramSolver.Contracts
     {
         Dictionary<string,int> GetWordsDictionary();
         List<string> GetWords(int skip, int take);
-        void AddWord(KeyValuePair<string, int> keyValue);
+        void AddWord(string input);
     }
 }

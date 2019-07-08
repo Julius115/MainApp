@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AnagramSolver.WebApp.Models;
-using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts;
 using System.IO;
 
@@ -38,8 +36,6 @@ namespace AnagramSolver.WebApp.Controllers
             if (word == null)
             {
                 return View("Empty");
-                //RouteData.Values.Remove("id");
-                //return RedirectToAction("Index");
             }
             return View(_anagramSolver.GetAnagrams(word).ToList());
         }
@@ -67,6 +63,8 @@ namespace AnagramSolver.WebApp.Controllers
                     sw.WriteLine(input);
                 }
             }
+
+            _wordRepository.AddWord(input);
 
             return View();
         }
