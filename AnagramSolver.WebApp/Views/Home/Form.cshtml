@@ -1,12 +1,12 @@
 ﻿@model List<string>
 
 @{
-    ViewData["Title"] = "Form";
+    ViewData["Title"] = "Index";
 }
 
 <h2>Form</h2>
 
-<form method="post" action="@Url.Action("Form", "Home")">
+<form method="post" action="@Url.Action("Index", "Home")">
     <label>Input word</label>
     <input type="text" , name="Input" />
     <br />

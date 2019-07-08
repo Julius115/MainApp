@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using AnagramSolver.WebApp.Models;
 using AnagramSolver.Contracts;
 using System.IO;
+using Microsoft.AspNetCore.Http;
+using RestSharp;
+using System.Net;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -26,7 +29,6 @@ namespace AnagramSolver.WebApp.Controllers
             return _anagramSolver.GetAnagrams(id).ToList();
         }
 
-        //[Route("Home/Index/{word?}")]
         public IActionResult Index(string id = null)
         {
             if (String.IsNullOrEmpty(id))
@@ -36,6 +38,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             return View(_anagramSolver.GetAnagrams(id).ToList());
         }
+
 
         public IActionResult About()
         {
