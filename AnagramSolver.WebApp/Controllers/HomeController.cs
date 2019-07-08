@@ -33,53 +33,68 @@ namespace AnagramSolver.WebApp.Controllers
         {
             if (String.IsNullOrEmpty(id))
             {
+                foreach (var cookie in Request.Cookies)
+                {
+                    if (cookie.Key == "inputWord")
+                    {
+                        return View(_anagramSolver.GetAnagrams(cookie.Value).ToList());
+                    }
+                }
                 return View();
+            }
+            else
+            {
+                    CookieOptions options = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(1)
+                    };
+                Response.Cookies.Append("inputWord", id, options);
             }
 
             return View(_anagramSolver.GetAnagrams(id).ToList());
         }
 
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult WriteToFile(string input)
-        {
-            if (String.IsNullOrEmpty(input))
+            public IActionResult About()
             {
+                ViewData["Message"] = "Your application description page.";
+
                 return View();
             }
 
-            List<string> inputList = input.Split().ToList();
-
-            if (!_wordRepository.GetWordsDictionary().Keys.Contains(inputList.First()))
+            public IActionResult WriteToFile(string input)
             {
-                using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
+                if (String.IsNullOrEmpty(input))
                 {
-                    sw.WriteLine(input);
+                    return View();
                 }
+
+                List<string> inputList = input.Split().ToList();
+
+                if (!_wordRepository.GetWordsDictionary().Keys.Contains(inputList.First()))
+                {
+                    using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
+                    {
+                        sw.WriteLine(input);
+                    }
+                }
+
+                _wordRepository.AddWord(input);
+
+                return View();
             }
 
-            _wordRepository.AddWord(input);
+            public IActionResult Contact()
+            {
+                ViewData["Message"] = "Your contact page.";
 
-            return View();
-        }
+                return View();
+            }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            public IActionResult Privacy()
+            {
+                return View();
+            }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
