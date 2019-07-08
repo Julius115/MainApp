@@ -1,10 +1,30 @@
-﻿@model  List<string>
+﻿@model List<string>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Form";
 }
-<h1>Anagrams:</h1>
-@foreach (string s in Model)
-{
-    <p>@s</p>
-}
+
+<h2>Form</h2>
+
+<form method="post" action="@Url.Action("Form", "Home")">
+    <label>Input word</label>
+    <input type="text" , name="Input" />
+    <br />
+    <button type="submit">Submit</button>
+    <br />
+    <label>Anagrams</label>
+    <ul>
+        @if (Model != null)
+        {
+            @foreach (string s in Model)
+            {
+                <li>
+                    @s
+                </li>
+            }
+        }
+
+    </ul>
+
+
+</form>

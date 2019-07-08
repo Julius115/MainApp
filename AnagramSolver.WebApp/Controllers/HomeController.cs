@@ -19,10 +19,6 @@ namespace AnagramSolver.WebApp.Controllers
             _anagramSolver = anagramSolver;
             _wordRepository = wordRepository;
         }
-        public IActionResult Index()
-        {
-            return View("Empty");
-        }
 
         [HttpGet]
         public List<string> GetAnagrams(string id)
@@ -30,14 +26,15 @@ namespace AnagramSolver.WebApp.Controllers
             return _anagramSolver.GetAnagrams(id).ToList();
         }
 
-        [Route("Home/Index/{word?}")]
-        public IActionResult Index(string word)
+        //[Route("Home/Index/{word?}")]
+        public IActionResult Index(string id = null)
         {
-            if (word == null)
+            if (String.IsNullOrEmpty(id))
             {
-                return View("Empty");
+                return View();
             }
-            return View(_anagramSolver.GetAnagrams(word).ToList());
+
+            return View(_anagramSolver.GetAnagrams(id).ToList());
         }
 
         public IActionResult About()
@@ -67,16 +64,6 @@ namespace AnagramSolver.WebApp.Controllers
             _wordRepository.AddWord(input);
 
             return View();
-        }
-
-        public IActionResult Form(string input)
-        {
-            if (String.IsNullOrEmpty(input))
-            {
-                return View();
-            }
-
-            return View(_anagramSolver.GetAnagrams(input).ToList());
         }
 
         public IActionResult Contact()

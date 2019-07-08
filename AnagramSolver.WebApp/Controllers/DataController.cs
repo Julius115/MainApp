@@ -32,7 +32,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             foreach (KeyValuePair<string, int> pair in _wordRepository.GetWordsDictionary())
             {
-                myStringBuilder.AppendFormat("{0} {1}\n", pair.Key, pair.Value);
+                myStringBuilder.AppendFormat("{0} {1}\r\n", pair.Key, pair.Value);
             }
 
             var enc = new UTF8Encoding();
