@@ -16,25 +16,6 @@ namespace AnagramSolver.BusinessLogic
         {
             Dictionary<string, int> wordsList = new Dictionary<string, int>();
 
-            /*using (StreamReader reader = new StreamReader(fileName))
-            {
-                string line = null;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] words = line.Split();
-
-                    if (!wordsList.ContainsKey(words[0]))
-                    {
-                        wordsList.Add(words[0], Int32.Parse(words[words.Length - 1]));
-                    }
-                    if (!wordsList.ContainsKey(words[words.Length - 2]))
-                    {
-                        wordsList.Add(words[words.Length - 2], Int32.Parse(words[words.Length - 1]));
-                    }
-                }
-            }
-            */
-
             string sql = @"INSERT INTO dbo.Words (Word) VALUES (test)";
 
             using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
@@ -51,20 +32,9 @@ namespace AnagramSolver.BusinessLogic
                             {
                                 wordsList.Add(reader["Word"].ToString(), 1);
                             }
-                            //Console.WriteLine();
                         }
                     }
                 }
-
-                //    conn.Open();
-                //
-                //string SQLstr = "INSERT INTO Words (Word)" +
-                //   "VALUES (@WORD)";
-                //SqlCommand cmd = new SqlCommand(SQLstr, conn);
-                //cmd.Parameters.Add("@WORD", System.Data.SqlDbType.VarChar);
-
-
-
             }
 
             _dictionary = wordsList;

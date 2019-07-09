@@ -1,0 +1,26 @@
+﻿@model AnagramSolver.WebApp.Models.WordSearchViewModel
+
+@{
+    ViewData["Title"] = "WordSearch";
+}
+
+<h1>Word Search</h1>
+
+
+<form method="post" action="@Url.Action("WordSearch", "Home")">
+    <label>Input word</label>
+    <input type="text" , name="id" />
+    <br />
+    <button type="submit">Submit</button>
+    <br />
+</form>
+
+@if (Model != null)
+{
+    @foreach (string s in Model.WordsToDisplay)
+    {
+        @Html.ActionLink(s, "Index", "Home", new { id = s })
+        <br />
+    }
+}
+<br />

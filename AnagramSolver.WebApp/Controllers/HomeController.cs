@@ -9,6 +9,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using RestSharp;
 using System.Net;
+using System.Data.SqlClient;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -44,10 +45,10 @@ namespace AnagramSolver.WebApp.Controllers
             }
             else
             {
-                    CookieOptions options = new CookieOptions
-                    {
-                        Expires = DateTime.Now.AddDays(1)
-                    };
+                CookieOptions options = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddDays(1)
+                };
                 Response.Cookies.Append("inputWord", id, options);
             }
 
@@ -55,46 +56,84 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
 
-            public IActionResult About()
-            {
-                ViewData["Message"] = "Your application description page.";
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
 
+            return View();
+        }
+
+        public IActionResult WriteToFile(string input)
+        {
+            if (String.IsNullOrEmpty(input))
+            {
                 return View();
             }
 
-            public IActionResult WriteToFile(string input)
+            List<string> inputList = input.Split().ToList();
+
+            if (!_wordRepository.GetWordsDictionary().Keys.Contains(inputList.First()))
             {
-                if (String.IsNullOrEmpty(input))
+                using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
                 {
-                    return View();
+                    sw.WriteLine(input);
+                }
+            }
+
+            _wordRepository.AddWord(input);
+
+            return View();
+        }
+
+        public IActionResult WordSearch(string id)
+        {
+
+            if (String.IsNullOrEmpty(id))
+            {
+                return View();
+            }
+
+            WordSearchViewModel wordSearch = new WordSearchViewModel();
+
+            List<string> wordsSql = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                conn.Open();
+
+                string SQLstr = "SELECT Word FROM Words WHERE Word LIKE '%' + @WORD + '%'";
+                SqlCommand cmd = new SqlCommand(SQLstr, conn);
+
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = ("@WORD");
+                param.Value = id;
+                cmd.Parameters.Add(param);
+
+                SqlDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    wordsSql.Add(reader.GetString(0));
                 }
 
-                List<string> inputList = input.Split().ToList();
-
-                if (!_wordRepository.GetWordsDictionary().Keys.Contains(inputList.First()))
-                {
-                    using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
-                    {
-                        sw.WriteLine(input);
-                    }
-                }
-
-                _wordRepository.AddWord(input);
-
-                return View();
+                wordSearch.WordsToDisplay = wordsSql;
             }
 
-            public IActionResult Contact()
-            {
-                ViewData["Message"] = "Your contact page.";
+            return View(wordSearch);
+        }
 
-                return View();
-            }
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
 
-            public IActionResult Privacy()
-            {
-                return View();
-            }
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
