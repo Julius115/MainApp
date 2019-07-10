@@ -24,12 +24,12 @@
         <th>Request Word</th>
         <th>Request Date</th>
     </tr>
-    @foreach (var searchData in Model)
+    @foreach (var searchDate in Model)
     {
         <tr>
-            <td><p>@searchData.Ip</p></td>
-            <td><p>@Html.ActionLink(searchData.RequestWord, "SearchInfo", "Home", new { word = searchData.RequestWord })</p></td>
-            <td><p>@searchData.RequestDate</p></td>
+            <td><p>@searchDate.Ip</p></td>
+            <td><p>@Html.ActionLink(searchDate.RequestWord, "SearchInfo", "Home", new { word = searchDate.RequestWord, date = searchDate.RequestDate.ToString("yyyy-MM-dd HH:mm:ss.fff") })</p></td>
+            <td><p>@searchDate.RequestDate</p></td>
         </tr>
     }
 </table>

@@ -18,6 +18,7 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly IAnagramSolver _anagramSolver;
         private readonly IWordRepository _wordRepository;
+        // private readonly ICachedWordsRepository _cachedWordsRepository
 
         public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository)
         {
@@ -54,7 +55,6 @@ namespace AnagramSolver.WebApp.Controllers
                 };
                 Response.Cookies.Append("inputWord", id, options);
             }
-            //-------------------------------------------
 
             using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
             {
@@ -117,7 +117,7 @@ namespace AnagramSolver.WebApp.Controllers
             return View(_anagramSolver.GetAnagrams(id).ToList());
         }
 
-        public IActionResult SearchInfo(string word)
+        public IActionResult SearchInfo(string word, DateTime date)
         {
             SearchInfoViewModel searchInfo = new SearchInfoViewModel();
             using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
@@ -127,15 +127,19 @@ namespace AnagramSolver.WebApp.Controllers
                 string SQLstr = "SELECT u.UserIp, u.RequestDate , u.RequestWord,  w.Word "+
                 "FROM UserLog AS u " +
                 "INNER JOIN CachedWords AS c " +
-                "ON u.RequestWord = c.RequestWord AND u.RequestWord = @WORD " +
+                "ON u.RequestWord = c.RequestWord AND u.RequestWord = @WORD AND u.RequestDate = @DATE " +
                 "INNER JOIN Words AS w " +
                 "ON w.Id = c.ResponseWord";
                 SqlCommand cmda = new SqlCommand(SQLstr, conn);
 
                 SqlParameter paramas = new SqlParameter();
-                paramas.ParameterName = ("@WORD");
-                paramas.Value = word;
-                cmda.Parameters.Add(paramas);
+
+                List<SqlParameter> prm = new List<SqlParameter>()
+                         {
+                             new SqlParameter("@WORD", SqlDbType.NVarChar) {Value = word},
+                             new SqlParameter("@DATE", SqlDbType.DateTime) {Value = date},
+                         };
+                cmda.Parameters.AddRange(prm.ToArray());
 
                 SqlDataReader reader;
                 reader = cmda.ExecuteReader();
@@ -148,25 +152,18 @@ namespace AnagramSolver.WebApp.Controllers
                     searchInfo.RequestWord = reader.GetString(2);
                     searchInfo.Anagrams.Add(reader.GetString(3));
                 }
-                //anagrams = new List<string>();
+
                 while (reader.Read())
                 {
                     searchInfo.Anagrams.Add(reader.GetString(3));
                 }
-                //while (reader.Read())
-                //{
-                //    anagrams.Add(reader.GetString(0));
-                //}
-
-
             }
+
             return View(searchInfo);
         }
 
         public IActionResult SearchHistory()
         {
-            //WordSearchViewModel wordSearch = new WordSearchViewModel();
-
             List<SearchHistoryViewModel> wordsSql = new List<SearchHistoryViewModel>();
 
             using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
@@ -176,19 +173,14 @@ namespace AnagramSolver.WebApp.Controllers
                 string SQLstr = "SELECT UserIp, RequestWord, RequestDate FROM UserLog";
                 SqlCommand cmd = new SqlCommand(SQLstr, conn);
 
-
-
                 SqlDataReader reader;
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    //wordsSql
                     wordsSql.Add(new SearchHistoryViewModel() { Ip = reader.GetString(0), RequestWord = reader.GetString(1), RequestDate = reader.GetDateTime(2) });
 
                 }
-
-                //wordSearch.WordsToDisplay = wordsSql;
             }
 
             return View(wordsSql);
@@ -204,13 +196,6 @@ namespace AnagramSolver.WebApp.Controllers
                                 "( @USERIP , @REQUESTWORD, @REQUESTDATE); ";
 
                 SqlCommand cmda = new SqlCommand(SQLstr, conn);
-                //SqlParameter param = new SqlParameter();
-                //param.ParameterName = ("@USERIP");
-                //param.Value = 
-                //cmda.Parameters.Add(param);
-                //
-                //SqlCommand cmda1 = new SqlCommand(SQLstr, conn);
-
                 List<SqlParameter> prm = new List<SqlParameter>()
                          {
                              new SqlParameter("@USERIP", SqlDbType.NVarChar) {Value = HttpContext.Connection.LocalIpAddress.ToString()},
@@ -253,6 +238,10 @@ namespace AnagramSolver.WebApp.Controllers
             {
                 conn.Open();
                 command.Parameters.AddWithValue("@TABLENAME", tableName);
+                command.ExecuteNonQuery();
+
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@TABLENAME", "UserLog");
                 command.ExecuteNonQuery();
             }
 
@@ -325,8 +314,6 @@ namespace AnagramSolver.WebApp.Controllers
 
             return View(wordSearch);
         }
-
-
 
         public IActionResult Contact()
         {
