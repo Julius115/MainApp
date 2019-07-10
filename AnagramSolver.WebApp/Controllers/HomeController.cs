@@ -113,7 +113,85 @@ namespace AnagramSolver.WebApp.Controllers
                 }
             }
 
+            Log(id);
             return View(_anagramSolver.GetAnagrams(id).ToList());
+        }
+
+        public IActionResult SearchInfo(string word)
+        {
+            SearchInfoViewModel searchInfo = new SearchInfoViewModel();
+            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                conn.Open();
+
+                string SQLstr = "SELECT u.UserIp, u.RequestDate , u.RequestWord,  w.Word "+
+                "FROM UserLog AS u " +
+                "INNER JOIN CachedWords AS c " +
+                "ON u.RequestWord = c.RequestWord AND u.RequestWord = @WORD " +
+                "INNER JOIN Words AS w " +
+                "ON w.Id = c.ResponseWord";
+                SqlCommand cmda = new SqlCommand(SQLstr, conn);
+
+                SqlParameter paramas = new SqlParameter();
+                paramas.ParameterName = ("@WORD");
+                paramas.Value = word;
+                cmda.Parameters.Add(paramas);
+
+                SqlDataReader reader;
+                reader = cmda.ExecuteReader();
+
+                if (reader != null)
+                {
+                    reader.Read();
+                    searchInfo.UserIp = reader.GetString(0);
+                    searchInfo.RequestDate = reader.GetDateTime(1);
+                    searchInfo.RequestWord = reader.GetString(2);
+                    searchInfo.Anagrams.Add(reader.GetString(3));
+                }
+                //anagrams = new List<string>();
+                while (reader.Read())
+                {
+                    searchInfo.Anagrams.Add(reader.GetString(3));
+                }
+                //while (reader.Read())
+                //{
+                //    anagrams.Add(reader.GetString(0));
+                //}
+
+
+            }
+            return View(searchInfo);
+        }
+
+        public IActionResult SearchHistory()
+        {
+            //WordSearchViewModel wordSearch = new WordSearchViewModel();
+
+            List<SearchHistoryViewModel> wordsSql = new List<SearchHistoryViewModel>();
+
+            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                conn.Open();
+
+                string SQLstr = "SELECT UserIp, RequestWord, RequestDate FROM UserLog";
+                SqlCommand cmd = new SqlCommand(SQLstr, conn);
+
+
+
+                SqlDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    //wordsSql
+                    wordsSql.Add(new SearchHistoryViewModel() { Ip = reader.GetString(0), RequestWord = reader.GetString(1), RequestDate = reader.GetDateTime(2) });
+
+                }
+
+                //wordSearch.WordsToDisplay = wordsSql;
+            }
+
+            return View(wordsSql);
         }
 
         public void Log(string inputWord)

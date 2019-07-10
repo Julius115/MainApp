@@ -1,0 +1,18 @@
+﻿@model AnagramSolver.WebApp.Models.SearchInfoViewModel
+
+@{
+    ViewData["Title"] = "SearchInfo";
+}
+
+<h2>SearchInfo</h2>
+
+<p><b>User Ip</b>: @Model.UserIp</p>
+<p><b>Request Date</b>: @Model.RequestDate</p>
+<p><b>Request Word</b>: @Model.RequestWord</p>
+<p><b>Anagrams</b>:</p>
+<ul>
+    @foreach(string s in Model.Anagrams)
+    {
+        <li>@s</li>
+    }
+</ul>

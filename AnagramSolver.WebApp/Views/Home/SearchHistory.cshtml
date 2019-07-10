@@ -1,0 +1,35 @@
+﻿@model List<SearchHistoryViewModel>
+
+@{
+    ViewData["Title"] = "SearchHistory";
+}
+
+<h2>SearchHistory</h2>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+    }
+</style>
+
+
+<table>
+    <tr>
+        <th>Ip</th>
+        <th>Request Word</th>
+        <th>Request Date</th>
+    </tr>
+    @foreach (var searchData in Model)
+    {
+        <tr>
+            <td><p>@searchData.Ip</p></td>
+            <td><p>@Html.ActionLink(searchData.RequestWord, "SearchInfo", "Home", new { word = searchData.RequestWord })</p></td>
+            <td><p>@searchData.RequestDate</p></td>
+        </tr>
+    }
+</table>
