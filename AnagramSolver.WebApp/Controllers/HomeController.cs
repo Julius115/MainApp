@@ -114,6 +114,42 @@ namespace AnagramSolver.WebApp.Controllers
             return View(_anagramSolver.GetAnagrams(id).ToList());
         }
 
+        public IActionResult ClearTable(string tableName)
+        {
+            if (String.IsNullOrEmpty(tableName))
+            {
+                using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+                {
+                    conn.Open();
+
+                    string SQLstr = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = 'AnagramsDB'";
+                    SqlCommand cmda = new SqlCommand(SQLstr, conn);
+
+                    SqlDataReader reader = cmda.ExecuteReader();
+                    List<string> anagrams = new List<string>();
+
+                    while (reader.Read())
+                    {
+                        anagrams.Add(reader.GetString(0));
+                    }
+
+                    return View(anagrams);
+                }
+            }
+
+            using (var conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            using (var command = new SqlCommand("ClearTableData", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                command.Parameters.AddWithValue("@TABLENAME", tableName);
+                command.ExecuteNonQuery();
+            }
+
+            return RedirectToAction("Index");
+        }
 
         public IActionResult About()
         {
