@@ -88,6 +88,8 @@ namespace AnagramSolver.WebApp.Controllers
                     }
 
                     ViewBag.Cached = true;
+
+                    Log(id);
                     return View(anagrams);
                 }
 
@@ -112,6 +114,34 @@ namespace AnagramSolver.WebApp.Controllers
             }
 
             return View(_anagramSolver.GetAnagrams(id).ToList());
+        }
+
+        public void Log(string inputWord)
+        {
+            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                conn.Open();
+
+                string SQLstr = "INSERT INTO UserLog (UserIp, RequestWord, RequestDate) VALUES" +
+                                "( @USERIP , @REQUESTWORD, @REQUESTDATE); ";
+
+                SqlCommand cmda = new SqlCommand(SQLstr, conn);
+                //SqlParameter param = new SqlParameter();
+                //param.ParameterName = ("@USERIP");
+                //param.Value = 
+                //cmda.Parameters.Add(param);
+                //
+                //SqlCommand cmda1 = new SqlCommand(SQLstr, conn);
+
+                List<SqlParameter> prm = new List<SqlParameter>()
+                         {
+                             new SqlParameter("@USERIP", SqlDbType.NVarChar) {Value = HttpContext.Connection.LocalIpAddress.ToString()},
+                             new SqlParameter("@REQUESTWORD", SqlDbType.NVarChar) {Value = inputWord},
+                             new SqlParameter("@REQUESTDATE", SqlDbType.DateTime) {Value = DateTime.Now }
+                         };
+                cmda.Parameters.AddRange(prm.ToArray());
+                cmda.ExecuteNonQuery();
+            }
         }
 
         public IActionResult ClearTable(string tableName)
