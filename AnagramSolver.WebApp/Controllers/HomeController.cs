@@ -11,6 +11,7 @@ using RestSharp;
 using System.Net;
 using System.Data.SqlClient;
 using System.Data;
+using AnagramSolver.BusinessLogic;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -18,12 +19,19 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly IAnagramSolver _anagramSolver;
         private readonly IWordRepository _wordRepository;
-        // private readonly ICachedWordsRepository _cachedWordsRepository
+
+        private readonly ICachedWords _cachedWords;
+        private readonly ILogger _logger;
+        private readonly IDatabaseManager _databaseManager;
 
         public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository)
         {
             _anagramSolver = anagramSolver;
             _wordRepository = wordRepository;
+
+            _cachedWords = new CachedWordsRepository(_anagramSolver);
+            _logger = new LoggerRepository();
+            _databaseManager = new DatabaseManagerRepository();
         }
 
         [HttpGet]
@@ -56,65 +64,9 @@ namespace AnagramSolver.WebApp.Controllers
                 Response.Cookies.Append("inputWord", id, options);
             }
 
-            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
-            {
-                conn.Open();
+            _logger.Log(id, HttpContext.Connection.LocalIpAddress.ToString());
 
-                string SQLstr = "SELECT Count(Id) FROM CachedWords WHERE RequestWord = @WORD";
-                SqlCommand cmda = new SqlCommand(SQLstr, conn);
-                SqlParameter param = new SqlParameter();
-                param.ParameterName = ("@WORD");
-                param.Value = id;
-                cmda.Parameters.Add(param);
-
-                if ((int)cmda.ExecuteScalar() > 0)
-                {
-                    SQLstr = "SELECT b.Word FROM Words AS b INNER JOIN CachedWords as a ON (b.Id = a.ResponseWord and a.RequestWord = @WORD)";
-                    cmda = new SqlCommand(SQLstr, conn);
-
-                    SqlParameter paramas = new SqlParameter();
-                    paramas.ParameterName = ("@WORD");
-                    paramas.Value = id;
-                    cmda.Parameters.Add(paramas);
-
-                    SqlDataReader reader;
-                    reader = cmda.ExecuteReader();
-
-                    anagrams = new List<string>();
-
-                    while (reader.Read())
-                    {
-                        anagrams.Add(reader.GetString(0));
-                    }
-
-                    ViewBag.Cached = true;
-
-                    Log(id);
-                    return View(anagrams);
-                }
-
-                anagrams = _anagramSolver.GetAnagrams(id).ToList();
-
-                foreach (string anagram in anagrams)
-                {
-                    SQLstr = "INSERT INTO CachedWords (RequestWord, ResponseWord) VALUES" +
-                                "( @WORD , (SELECT Id FROM Words WHERE Word = @WORDREQUEST)); ";
-
-                    SqlCommand cmda1 = new SqlCommand(SQLstr, conn);
-
-                    List<SqlParameter> prm = new List<SqlParameter>()
-                         {
-                             new SqlParameter("@WORD", SqlDbType.NVarChar) {Value = id},
-                             new SqlParameter("@WORDREQUEST", SqlDbType.NVarChar) {Value = anagram},
-                         };
-                    cmda1.Parameters.AddRange(prm.ToArray());
-
-                    cmda1.ExecuteNonQuery();
-                }
-            }
-
-            Log(id);
-            return View(_anagramSolver.GetAnagrams(id).ToList());
+            return View(_cachedWords.CacheWords(id));
         }
 
         public IActionResult SearchInfo(string word, DateTime date)
@@ -124,7 +76,7 @@ namespace AnagramSolver.WebApp.Controllers
             {
                 conn.Open();
 
-                string SQLstr = "SELECT u.UserIp, u.RequestDate , u.RequestWord,  w.Word "+
+                string SQLstr = "SELECT u.UserIp, u.RequestDate , u.RequestWord,  w.Word " +
                 "FROM UserLog AS u " +
                 "INNER JOIN CachedWords AS c " +
                 "ON u.RequestWord = c.RequestWord AND u.RequestWord = @WORD AND u.RequestDate = @DATE " +
@@ -186,64 +138,14 @@ namespace AnagramSolver.WebApp.Controllers
             return View(wordsSql);
         }
 
-        public void Log(string inputWord)
-        {
-            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
-            {
-                conn.Open();
-
-                string SQLstr = "INSERT INTO UserLog (UserIp, RequestWord, RequestDate) VALUES" +
-                                "( @USERIP , @REQUESTWORD, @REQUESTDATE); ";
-
-                SqlCommand cmda = new SqlCommand(SQLstr, conn);
-                List<SqlParameter> prm = new List<SqlParameter>()
-                         {
-                             new SqlParameter("@USERIP", SqlDbType.NVarChar) {Value = HttpContext.Connection.LocalIpAddress.ToString()},
-                             new SqlParameter("@REQUESTWORD", SqlDbType.NVarChar) {Value = inputWord},
-                             new SqlParameter("@REQUESTDATE", SqlDbType.DateTime) {Value = DateTime.Now }
-                         };
-                cmda.Parameters.AddRange(prm.ToArray());
-                cmda.ExecuteNonQuery();
-            }
-        }
-
         public IActionResult ClearTable(string tableName)
         {
             if (String.IsNullOrEmpty(tableName))
             {
-                using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
-                {
-                    conn.Open();
-
-                    string SQLstr = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = 'AnagramsDB'";
-                    SqlCommand cmda = new SqlCommand(SQLstr, conn);
-
-                    SqlDataReader reader = cmda.ExecuteReader();
-                    List<string> anagrams = new List<string>();
-
-                    while (reader.Read())
-                    {
-                        anagrams.Add(reader.GetString(0));
-                    }
-
-                    return View(anagrams);
-                }
+                return View(_databaseManager.GetTablesNames(tableName));
             }
 
-            using (var conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
-            using (var command = new SqlCommand("ClearTableData", conn)
-            {
-                CommandType = CommandType.StoredProcedure
-            })
-            {
-                conn.Open();
-                command.Parameters.AddWithValue("@TABLENAME", tableName);
-                command.ExecuteNonQuery();
-
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("@TABLENAME", "UserLog");
-                command.ExecuteNonQuery();
-            }
+            _databaseManager.DeleteTableData(tableName);
 
             return RedirectToAction("Index");
         }
