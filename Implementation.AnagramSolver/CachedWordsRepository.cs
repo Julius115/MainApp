@@ -57,6 +57,8 @@ namespace AnagramSolver.BusinessLogic
 
         public void SetCachedAnagrams(string requestWord)
         {
+            var wordsList = requestWord.Split();
+            requestWord = wordsList[0];
             anagrams = _anagramSolver.GetAnagrams(requestWord).ToList();
 
             using (SqlConnection conn = new SqlConnection(_connectionString))

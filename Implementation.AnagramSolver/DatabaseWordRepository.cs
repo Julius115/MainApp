@@ -12,7 +12,7 @@ namespace AnagramSolver.BusinessLogic
     {
         private Dictionary<string, int> _dictionary;
 
-        public DatabaseWordRepository(string fileName)
+        public DatabaseWordRepository()
         {
             Dictionary<string, int> wordsList = new Dictionary<string, int>();
 

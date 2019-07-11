@@ -143,7 +143,7 @@ namespace AnagramSolver.WebApp.Controllers
                 }
             }
 
-            _wordRepository.AddWord(input);
+            _wordRepository.AddWord(inputList.First());
 
             return View();
         }

@@ -1,11 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnagramSolver.EF.DatabaseFirst\AnagramSolver.EF.DatabaseFirst.csproj" />
     <ProjectReference Include="..\Interfaces.AnagramSolver\AnagramSolver.Contracts.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>
