@@ -40,8 +40,7 @@ namespace AnagramSolver.BusinessLogic
 
         public List<string> GetWords(int skip, int take)
         {
-            List<String> words = em.Words.Skip(skip).Take(take).Select(a => a.Word).ToList();
-            return words;
+            return _dictionary.Keys.Skip(skip).Take(skip * take).ToList(); ;
 
         }
 

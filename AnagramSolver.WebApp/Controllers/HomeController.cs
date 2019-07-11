@@ -12,6 +12,7 @@ using System.Net;
 using System.Data.SqlClient;
 using System.Data;
 using AnagramSolver.BusinessLogic;
+using AnagramSolver.EF.DatabaseFirst.Repositories;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -34,10 +35,10 @@ namespace AnagramSolver.WebApp.Controllers
 
             _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-            _cachedWords = new CachedWordsRepository(_anagramSolver);
-            _logger = new LoggerRepository(_connectionString);
-            _databaseManager = new DatabaseManagerRepository(_connectionString);
-            _wordSearchRepository = new WordSearchRepository(_connectionString);
+            _cachedWords = new EntityManagerCachedWordsRepository(_anagramSolver);
+            _logger = new EntityManagerLoggerRepository();
+            _databaseManager = new EntityManagerControlRepository();
+            _wordSearchRepository = new EntityManagerWordSearchRepository();
         }
 
         [HttpGet]
