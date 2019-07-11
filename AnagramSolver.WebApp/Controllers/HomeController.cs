@@ -25,15 +25,19 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly IDatabaseManager _databaseManager;
         private readonly IWordSearch _wordSearchRepository;
 
+        private readonly string _connectionString;
+
         public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository)
         {
             _anagramSolver = anagramSolver;
             _wordRepository = wordRepository;
 
+            _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
             _cachedWords = new CachedWordsRepository(_anagramSolver);
-            _logger = new LoggerRepository();
-            _databaseManager = new DatabaseManagerRepository();
-            _wordSearchRepository = new WordSearchRepository(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            _logger = new LoggerRepository(_connectionString);
+            _databaseManager = new DatabaseManagerRepository(_connectionString);
+            _wordSearchRepository = new WordSearchRepository(_connectionString);
         }
 
         [HttpGet]
