@@ -9,10 +9,15 @@ namespace AnagramSolver.BusinessLogic
 {
     public class DatabaseManagerRepository : IDatabaseManager
     {
-        private List<string> anagrams = new List<string>();
+        private readonly string _connectionString;
+
+        public DatabaseManagerRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         public List<string> GetTablesNames(string tableName)
         {
-            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
 
@@ -33,7 +38,7 @@ namespace AnagramSolver.BusinessLogic
 
         public void DeleteTableData(string tableName)
         {
-            using (var conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            using (var conn = new SqlConnection(_connectionString))
             using (var command = new SqlCommand("ClearTableData", conn)
             {
                 CommandType = CommandType.StoredProcedure

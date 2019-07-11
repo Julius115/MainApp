@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace AnagramSolver.WebApp.Models
+namespace AnagramSolver.Contracts
 {
-    public class SearchInfoViewModel //SearchInfoModel
+    public class SearchInfoModel
     {
         public string UserIp { get; set; }
         public DateTime RequestDate { get; set; }

@@ -9,9 +9,15 @@ namespace AnagramSolver.BusinessLogic
 {
     public class LoggerRepository : ILogger
     {
+        private readonly string _connectionString;
+
+        public LoggerRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         public void Log(string requestWord, string userIp)
         {
-            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
 

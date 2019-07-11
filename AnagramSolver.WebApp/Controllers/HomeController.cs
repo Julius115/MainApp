@@ -23,6 +23,7 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly ICachedWords _cachedWords;
         private readonly ILogger _logger;
         private readonly IDatabaseManager _databaseManager;
+        private readonly IWordSearch _wordSearchRepository;
 
         public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository)
         {
@@ -32,6 +33,7 @@ namespace AnagramSolver.WebApp.Controllers
             _cachedWords = new CachedWordsRepository(_anagramSolver);
             _logger = new LoggerRepository();
             _databaseManager = new DatabaseManagerRepository();
+            _wordSearchRepository = new WordSearchRepository(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         [HttpGet]
@@ -71,44 +73,17 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult SearchInfo(string word, DateTime date)
         {
+            SearchInfoModel searchInfoResult = _wordSearchRepository.GetSearchInfo(word, date);
+
             SearchInfoViewModel searchInfo = new SearchInfoViewModel();
-            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+
+            searchInfo.UserIp = searchInfoResult.UserIp;
+            searchInfo.RequestWord = searchInfoResult.RequestWord;
+            searchInfo.RequestDate = searchInfoResult.RequestDate;
+
+            foreach (string s in searchInfoResult.Anagrams)
             {
-                conn.Open();
-
-                string SQLstr = "SELECT u.UserIp, u.RequestDate , u.RequestWord,  w.Word " +
-                "FROM UserLog AS u " +
-                "INNER JOIN CachedWords AS c " +
-                "ON u.RequestWord = c.RequestWord AND u.RequestWord = @WORD AND u.RequestDate = @DATE " +
-                "INNER JOIN Words AS w " +
-                "ON w.Id = c.ResponseWord";
-                SqlCommand cmda = new SqlCommand(SQLstr, conn);
-
-                SqlParameter paramas = new SqlParameter();
-
-                List<SqlParameter> prm = new List<SqlParameter>()
-                         {
-                             new SqlParameter("@WORD", SqlDbType.NVarChar) {Value = word},
-                             new SqlParameter("@DATE", SqlDbType.DateTime) {Value = date},
-                         };
-                cmda.Parameters.AddRange(prm.ToArray());
-
-                SqlDataReader reader;
-                reader = cmda.ExecuteReader();
-
-                if (reader != null)
-                {
-                    reader.Read();
-                    searchInfo.UserIp = reader.GetString(0);
-                    searchInfo.RequestDate = reader.GetDateTime(1);
-                    searchInfo.RequestWord = reader.GetString(2);
-                    searchInfo.Anagrams.Add(reader.GetString(3));
-                }
-
-                while (reader.Read())
-                {
-                    searchInfo.Anagrams.Add(reader.GetString(3));
-                }
+                searchInfo.Anagrams.Add(s);
             }
 
             return View(searchInfo);
@@ -116,26 +91,16 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult SearchHistory()
         {
-            List<SearchHistoryViewModel> wordsSql = new List<SearchHistoryViewModel>();
+            List<SearchHistoryViewModel> searchHistory = new List<SearchHistoryViewModel>();
 
-            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            List<SearchHistoryInfoModel> searchHistoryResult = _wordSearchRepository.GetSearchHistory();
+
+            foreach (SearchHistoryInfoModel s in searchHistoryResult)
             {
-                conn.Open();
-
-                string SQLstr = "SELECT UserIp, RequestWord, RequestDate FROM UserLog";
-                SqlCommand cmd = new SqlCommand(SQLstr, conn);
-
-                SqlDataReader reader;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    wordsSql.Add(new SearchHistoryViewModel() { Ip = reader.GetString(0), RequestWord = reader.GetString(1), RequestDate = reader.GetDateTime(2) });
-
-                }
+                searchHistory.Add(new SearchHistoryViewModel() { Ip = s.Ip, RequestDate = s.RequestDate, RequestWord = s.RequestWord });
             }
 
-            return View(wordsSql);
+            return View(searchHistory);
         }
 
         public IActionResult ClearTable(string tableName)
@@ -181,7 +146,7 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult WordSearch(string id)
         {
-
+            
             if (String.IsNullOrEmpty(id))
             {
                 return View();
@@ -189,30 +154,8 @@ namespace AnagramSolver.WebApp.Controllers
 
             WordSearchViewModel wordSearch = new WordSearchViewModel();
 
-            List<string> wordsSql = new List<string>();
-
-            using (SqlConnection conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
-            {
-                conn.Open();
-
-                string SQLstr = "SELECT Word FROM Words WHERE Word LIKE '%' + @WORD + '%'";
-                SqlCommand cmd = new SqlCommand(SQLstr, conn);
-
-                SqlParameter param = new SqlParameter();
-                param.ParameterName = ("@WORD");
-                param.Value = id;
-                cmd.Parameters.Add(param);
-
-                SqlDataReader reader;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    wordsSql.Add(reader.GetString(0));
-                }
-
-                wordSearch.WordsToDisplay = wordsSql;
-            }
+            wordSearch.SearchedWord = id;
+            wordSearch.WordsToDisplay = _wordSearchRepository.GetWordsContainingPart(id);
 
             return View(wordSearch);
         }

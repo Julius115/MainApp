@@ -61,7 +61,6 @@ namespace AnagramSolver.BusinessLogic
                 _dictionary.Add(inputWords[inputWords.Length - 2], Int32.Parse(inputWords[inputWords.Length - 1]));
             }
 
-            //((ICollection<KeyValuePair<string, int>>)_dictionary).Add(keyValue);
         }
 
         public Dictionary<string, int> GetWordsDictionary()
