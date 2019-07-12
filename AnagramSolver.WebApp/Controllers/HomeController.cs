@@ -22,7 +22,6 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly IAnagramSolver _anagramSolver;
         private readonly IWordRepository _wordRepository;
-        //private readonly ICachedWords _cachedWords;
         private readonly ILogger _logger;
         private readonly IDatabaseManager _databaseManager;
         private readonly IWordSearch _wordSearchRepository;
