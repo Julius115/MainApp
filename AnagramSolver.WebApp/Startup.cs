@@ -4,12 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts;
+using AnagramSolver.EF.DatabaseFirst;
+using AnagramSolver.EF.DatabaseFirst.Repositories;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,9 +38,14 @@ namespace AnagramSolver.WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddSingleton<IWordRepository>(x => new EFWordRepository());
-            //services.AddSingleton<IWordRepository>(x => new DatabaseWordRepository("zodynas.txt"));
-            services.AddTransient<IAnagramSolver, AnagramSolverSingleWord>();
+            services.AddSingleton<AnagramsDBContext, AnagramsDBContext>();
+
+            services.AddSingleton<IWordRepository, EFWordRepository>();
+            services.AddSingleton<IAnagramSolver, AnagramSolverSingleWord>();
+            services.AddSingleton<IDatabaseManager, EFControlRepository>();
+            services.AddSingleton<ICachedWords, EFCachedWordsRepository>();
+            services.AddSingleton<ILogger, EFLoggerRepository>();
+            services.AddSingleton<IWordSearch, EFWordSearchRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

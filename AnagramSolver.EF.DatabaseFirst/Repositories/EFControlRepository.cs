@@ -11,19 +11,25 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
 {
     public class EFControlRepository : IDatabaseManager
     {
-        AnagramsDBContext em = new AnagramsDBContext();
+        private readonly AnagramsDBContext _em;
+
+        public EFControlRepository(AnagramsDBContext dbContext)
+        {
+            _em = dbContext;
+        }
 
         public List<string> GetTablesNames(string tableName)
         {
-            List<string> tableNames = em.Model.GetEntityTypes().Select(t => t.ClrType).Select(a => a.Name).ToList();
+            
+            List<string> tableNames = _em.Model.GetEntityTypes().Select(t => t.ClrType).Select(a => a.Name).ToList();
             
             return tableNames;
         }
 
         public void DeleteTableData(string tableName)
         {
-            DbCommand cmd = em.Database.GetDbConnection().CreateCommand();
-            em.Database.ExecuteSqlCommand("ClearTableData @TABLENAME", new SqlParameter("@TABLENAME", tableName));
+            DbCommand cmd = _em.Database.GetDbConnection().CreateCommand();
+            _em.Database.ExecuteSqlCommand("ClearTableData @TABLENAME", new SqlParameter("@TABLENAME", tableName));
         }
     }
 }

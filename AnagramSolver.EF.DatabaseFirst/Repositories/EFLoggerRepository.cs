@@ -7,7 +7,12 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
 {
     public class EFLoggerRepository : ILogger
     {
-        AnagramsDBContext em = new AnagramsDBContext();
+        private readonly AnagramsDBContext _em;
+
+        public EFLoggerRepository(AnagramsDBContext dbContext)
+        {
+            _em = dbContext;
+        }
 
         public void Log(string requestWord, string userIp)
         {
@@ -16,8 +21,8 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
             userLog.UserIp = userIp;
             userLog.RequestDate = DateTime.Now;
 
-            em.UserLog.Add(userLog);
-            em.SaveChanges();
+            _em.UserLog.Add(userLog);
+            _em.SaveChanges();
         }
     }
 }

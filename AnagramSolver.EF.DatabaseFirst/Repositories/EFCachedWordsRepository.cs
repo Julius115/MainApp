@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,18 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
 
     public class EFCachedWordsRepository : ICachedWords
     {
-        private readonly IAnagramSolver _anagramSolver;
-        AnagramsDBContext em = new AnagramsDBContext();
-
         private List<string> anagrams = new List<string>();
 
-        public EFCachedWordsRepository(IAnagramSolver anagramSolver)
+
+        private readonly IAnagramSolver _anagramSolver;
+        private readonly AnagramsDBContext _em;
+
+        public EFCachedWordsRepository(IAnagramSolver anagramSolver, AnagramsDBContext dbContext)
         {
             _anagramSolver = anagramSolver;
+            _em = dbContext;
         }
-
+        
         public List<string> CacheWords(string requestWord)
         {
             if (CheckIfCached(requestWord))
@@ -32,7 +35,7 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
 
         public bool CheckIfCached(string requestWord)
         {
-            return ((em.CachedWords.Where(w => w.RequestWord == requestWord)).Count() > 0);
+            return ((_em.CachedWords.Where(w => w.RequestWord == requestWord)).Count() > 0);
         }
 
         public void SetCachedAnagrams(string requestWord)
@@ -45,17 +48,17 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
             {
                 CachedWords cachedWord = new CachedWords();
                 cachedWord.RequestWord = requestWord;
-                cachedWord.ResponseWord = em.Words.Where(w => w.Word == anagram).Single().Id;
-                em.CachedWords.Add(cachedWord);
+                cachedWord.ResponseWord = _em.Words.Where(w => w.Word == anagram).Single().Id;
+                _em.CachedWords.Add(cachedWord);
             }
 
-            em.SaveChanges();
+            _em.SaveChanges();
         }
 
         public List<string> GetCachedAnagrams(string requestWord)
         {
-            List<string> q = (from w in em.Words
-                    from c in em.CachedWords
+            List<string> q = (from w in _em.Words
+                    from c in _em.CachedWords
                     where c.ResponseWord == w.Id
                     && c.RequestWord == requestWord
                     select w.Word.ToString()).ToList();

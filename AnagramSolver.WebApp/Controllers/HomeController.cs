@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.Data;
 using AnagramSolver.BusinessLogic;
 using AnagramSolver.EF.DatabaseFirst.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -20,25 +21,19 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly IAnagramSolver _anagramSolver;
         private readonly IWordRepository _wordRepository;
-
         private readonly ICachedWords _cachedWords;
         private readonly ILogger _logger;
         private readonly IDatabaseManager _databaseManager;
         private readonly IWordSearch _wordSearchRepository;
 
-        private readonly string _connectionString;
-
-        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository)
+        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ICachedWords cachedWords, ILogger logger, IWordSearch wordSearch)
         {
             _anagramSolver = anagramSolver;
             _wordRepository = wordRepository;
-
-            _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-            _cachedWords = new EFCachedWordsRepository(_anagramSolver);
-            _logger = new EFLoggerRepository();
-            _databaseManager = new EFControlRepository();
-            _wordSearchRepository = new EFWordSearchRepository();
+            _databaseManager = databaseManager;
+            _cachedWords = cachedWords;
+            _logger = logger;
+            _wordSearchRepository = wordSearch;
         }
 
         [HttpGet]

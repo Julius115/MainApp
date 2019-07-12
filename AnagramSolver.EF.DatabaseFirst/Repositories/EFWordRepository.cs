@@ -10,13 +10,15 @@ namespace AnagramSolver.BusinessLogic
     public class EFWordRepository : IWordRepository
     {
         private Dictionary<string, int> _dictionary;
-        private readonly AnagramsDBContext em = new AnagramsDBContext();
+        private readonly AnagramsDBContext _em;
 
-        public EFWordRepository()
+        public EFWordRepository(AnagramsDBContext dbContext)
         {
+            _em = dbContext;
+            
             Dictionary<string, int> wordsList = new Dictionary<string, int>();
 
-            var result = em.Words;
+            var result = _em.Words;
 
             foreach (var w in result)
             {
@@ -33,14 +35,14 @@ namespace AnagramSolver.BusinessLogic
             Words word = new Words();
             word.Word = input;
 
-            em.Words.Add(word);
-            em.SaveChanges();
+            _em.Words.Add(word);
+            _em.SaveChanges();
 
         }
 
         public List<string> GetWords(int skip, int take)
         {
-            return _dictionary.Keys.Skip(skip).Take(skip * take).ToList(); ;
+            return _dictionary.Keys.Skip(skip).Take(take).ToList(); ;
 
         }
 
