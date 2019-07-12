@@ -10,28 +10,13 @@ namespace AnagramSolver.BusinessLogic
 {
     public class CachedWordsRepository : ICachedWords
     {
-        private readonly IAnagramSolver _anagramSolver;
         private readonly string _connectionString;
 
-        private List<string> anagrams = new List<string>();
-
-
-        public CachedWordsRepository(IAnagramSolver anagramSolver)
+        public CachedWordsRepository()
         {
-            _anagramSolver = anagramSolver;
             _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
 
-        public List<string> CacheWords(string requestWord)
-        {
-                if (CheckIfCached(requestWord))
-                {
-                    return GetCachedAnagrams(requestWord);
-                }
-
-                SetCachedAnagrams(requestWord);
-                return anagrams;
-        }
 
         public bool CheckIfCached(string requestWord)
         {
@@ -55,11 +40,10 @@ namespace AnagramSolver.BusinessLogic
             return false;
         }
 
-        public void SetCachedAnagrams(string requestWord)
+        public void SetCachedAnagrams(List<string> anagrams, string requestWord)
         {
             var wordsList = requestWord.Split();
             requestWord = wordsList[0];
-            anagrams = _anagramSolver.GetAnagrams(requestWord).ToList();
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
@@ -86,6 +70,7 @@ namespace AnagramSolver.BusinessLogic
 
         public List<string> GetCachedAnagrams(string requestWord)
         {
+            List<string> anagrams = new List<string>();
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();

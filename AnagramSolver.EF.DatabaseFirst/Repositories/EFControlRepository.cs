@@ -28,7 +28,6 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
 
         public void DeleteTableData(string tableName)
         {
-            DbCommand cmd = _em.Database.GetDbConnection().CreateCommand();
             _em.Database.ExecuteSqlCommand("ClearTableData @TABLENAME", new SqlParameter("@TABLENAME", tableName));
         }
     }

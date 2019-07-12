@@ -7,30 +7,14 @@ using System.Text;
 
 namespace AnagramSolver.EF.DatabaseFirst.Repositories
 {
-
     public class EFCachedWordsRepository : ICachedWords
     {
-        private List<string> anagrams = new List<string>();
-
-
-        private readonly IAnagramSolver _anagramSolver;
         private readonly AnagramsDBContext _em;
 
-        public EFCachedWordsRepository(IAnagramSolver anagramSolver, AnagramsDBContext dbContext)
+        public EFCachedWordsRepository(AnagramsDBContext dbContext)
         {
-            _anagramSolver = anagramSolver;
+            //_anagramSolver = anagramSolver;
             _em = dbContext;
-        }
-        
-        public List<string> CacheWords(string requestWord)
-        {
-            if (CheckIfCached(requestWord))
-            {
-                return GetCachedAnagrams(requestWord);
-            }
-
-            SetCachedAnagrams(requestWord);
-            return anagrams;
         }
 
         public bool CheckIfCached(string requestWord)
@@ -38,10 +22,8 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
             return ((_em.CachedWords.Where(w => w.RequestWord == requestWord)).Count() > 0);
         }
 
-        public void SetCachedAnagrams(string requestWord)
+        public void SetCachedAnagrams(List<string> anagrams, string requestWord)
         {
-            anagrams = _anagramSolver.GetAnagrams(requestWord).ToList();
-
             Words word = new Words();
 
             foreach (string anagram in anagrams)
@@ -66,5 +48,4 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
             return q;
         }
     }
-
 }

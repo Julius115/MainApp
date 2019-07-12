@@ -14,6 +14,7 @@ using System.Data;
 using AnagramSolver.BusinessLogic;
 using AnagramSolver.EF.DatabaseFirst.Repositories;
 using Microsoft.EntityFrameworkCore;
+using AnagramSolver.Services;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -21,19 +22,20 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly IAnagramSolver _anagramSolver;
         private readonly IWordRepository _wordRepository;
-        private readonly ICachedWords _cachedWords;
+        //private readonly ICachedWords _cachedWords;
         private readonly ILogger _logger;
         private readonly IDatabaseManager _databaseManager;
         private readonly IWordSearch _wordSearchRepository;
+        private readonly CachedWordsService _cachedWordsService;
 
-        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ICachedWords cachedWords, ILogger logger, IWordSearch wordSearch)
+        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ILogger logger, IWordSearch wordSearch, CachedWordsService cachedWordsService)
         {
             _anagramSolver = anagramSolver;
             _wordRepository = wordRepository;
             _databaseManager = databaseManager;
-            _cachedWords = cachedWords;
             _logger = logger;
             _wordSearchRepository = wordSearch;
+            _cachedWordsService = cachedWordsService;
         }
 
         [HttpGet]
@@ -68,7 +70,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             _logger.Log(id, HttpContext.Connection.LocalIpAddress.ToString());
 
-            return View(_cachedWords.CacheWords(id));
+            return View(_cachedWordsService.CacheWords(id));
         }
 
         public IActionResult SearchInfo(string word, DateTime date)

@@ -6,6 +6,7 @@ using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts;
 using AnagramSolver.EF.DatabaseFirst;
 using AnagramSolver.EF.DatabaseFirst.Repositories;
+using AnagramSolver.Services;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +47,7 @@ namespace AnagramSolver.WebApp
             services.AddSingleton<ICachedWords, EFCachedWordsRepository>();
             services.AddSingleton<ILogger, EFLoggerRepository>();
             services.AddSingleton<IWordSearch, EFWordSearchRepository>();
+            services.AddSingleton<CachedWordsService, CachedWordsService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
