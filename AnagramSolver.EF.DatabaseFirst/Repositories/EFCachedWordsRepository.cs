@@ -7,14 +7,14 @@ using System.Text;
 namespace AnagramSolver.EF.DatabaseFirst.Repositories
 {
 
-    public class EntityManagerCachedWordsRepository : ICachedWords
+    public class EFCachedWordsRepository : ICachedWords
     {
         private readonly IAnagramSolver _anagramSolver;
         AnagramsDBContext em = new AnagramsDBContext();
 
         private List<string> anagrams = new List<string>();
 
-        public EntityManagerCachedWordsRepository(IAnagramSolver anagramSolver)
+        public EFCachedWordsRepository(IAnagramSolver anagramSolver)
         {
             _anagramSolver = anagramSolver;
         }

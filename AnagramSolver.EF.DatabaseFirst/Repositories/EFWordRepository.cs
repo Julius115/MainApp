@@ -7,12 +7,12 @@ using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
-    public class EntityManagerWordRepository : IWordRepository
+    public class EFWordRepository : IWordRepository
     {
         private Dictionary<string, int> _dictionary;
         private readonly AnagramsDBContext em = new AnagramsDBContext();
 
-        public EntityManagerWordRepository()
+        public EFWordRepository()
         {
             Dictionary<string, int> wordsList = new Dictionary<string, int>();
 

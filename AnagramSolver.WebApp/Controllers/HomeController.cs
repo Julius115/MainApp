@@ -35,10 +35,10 @@ namespace AnagramSolver.WebApp.Controllers
 
             _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AnagramsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-            _cachedWords = new EntityManagerCachedWordsRepository(_anagramSolver);
-            _logger = new EntityManagerLoggerRepository();
-            _databaseManager = new EntityManagerControlRepository();
-            _wordSearchRepository = new EntityManagerWordSearchRepository();
+            _cachedWords = new EFCachedWordsRepository(_anagramSolver);
+            _logger = new EFLoggerRepository();
+            _databaseManager = new EFControlRepository();
+            _wordSearchRepository = new EFWordSearchRepository();
         }
 
         [HttpGet]

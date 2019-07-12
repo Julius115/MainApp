@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnagramSolver.EF.DatabaseFirst.Repositories
 {
-    public class EntityManagerLoggerRepository : ILogger
+    public class EFLoggerRepository : ILogger
     {
         AnagramsDBContext em = new AnagramsDBContext();
 

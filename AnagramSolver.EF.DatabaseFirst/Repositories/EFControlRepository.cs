@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AnagramSolver.EF.DatabaseFirst.Repositories
 {
-    public class EntityManagerControlRepository : IDatabaseManager
+    public class EFControlRepository : IDatabaseManager
     {
         AnagramsDBContext em = new AnagramsDBContext();
 
