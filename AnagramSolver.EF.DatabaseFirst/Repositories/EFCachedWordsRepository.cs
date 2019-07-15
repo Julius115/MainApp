@@ -38,23 +38,8 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
 
         public List<string> GetCachedAnagrams(string requestWord)
         {
-            //List<string> q = (from w in _em.Words
-            //        from c in _em.CachedWords
-            //        where c.ResponseWord == w.Id
-            //        && c.RequestWord == requestWord
-            //        select w.Word.ToString()).ToList();
-
-            //List<string> a = _em.Words.Where(x => x.Id == _em.CachedWords.Select(c => c.ResponseWord)))
-            //var a = _em.Words.Where(w => w.Id == _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(c => c.ResponseWord).ToList())
-
-            //var a = _em.Words.Where(w => w.Id == _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(c => c.ResponseWord).First()).Select(w => w.Word);
-            //var a = _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(u => u.ResponseWord == ))
-            //var a = _em.Words.Select(w => w.Word).Where()
-            //var a = _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(_em.Words.Where(a => a.Id == ))
-
-            //var a = _em.Words.Where(w => w.Id == _em.CachedWords.Where(c => c.RequestWord == requestWord))
             var anagrams = _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(x => x.ResponseWordNavigation.Word).ToList();
-            //var b = _em.Words.Select(a => a.Word == _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(c => c.ResponseWord));
+
             return anagrams;
         }
     }

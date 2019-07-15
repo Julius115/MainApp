@@ -10,10 +10,12 @@ namespace AnagramSolver.BusinessLogic
     public class AnagramSolverSingleWord : IAnagramSolver
     {
         private Dictionary<string, int> _words;
+        private readonly IWordRepository _wordRepository;
 
         public AnagramSolverSingleWord (IWordRepository wordRepository)
         {
-            _words = wordRepository.GetWordsDictionary();
+            _wordRepository = wordRepository;
+            _words = _wordRepository.GetWordsDictionary();
         }
 
         public IList<string> GetAnagrams(string myWords)

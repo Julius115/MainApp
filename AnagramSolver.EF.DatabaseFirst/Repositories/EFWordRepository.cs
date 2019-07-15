@@ -9,26 +9,26 @@ namespace AnagramSolver.BusinessLogic
 {
     public class EFWordRepository : IWordRepository
     {
-        private Dictionary<string, int> _dictionary;
+        //private Dictionary<string, int> _dictionary;
         private readonly AnagramsDBContext _em;
 
         public EFWordRepository(AnagramsDBContext dbContext)
         {
             _em = dbContext;
             
-            Dictionary<string, int> wordsList = new Dictionary<string, int>();
+            //Dictionary<string, int> wordsList = new Dictionary<string, int>();
+            //
+            //var result = _em.Words;
+            //
+            //foreach (var w in result)
+            //{
+            //    if (!wordsList.ContainsKey(w.Word))
+            //    {
+            //        wordsList.Add(w.Word, 1);
+            //    }
+            //}
 
-            var result = _em.Words;
-
-            foreach (var w in result)
-            {
-                if (!wordsList.ContainsKey(w.Word))
-                {
-                    wordsList.Add(w.Word, 1);
-                }
-            }
-
-            _dictionary = wordsList;
+            //_dictionary = wordsList;
         }
         public void AddWord(string input)
         {
@@ -42,12 +42,23 @@ namespace AnagramSolver.BusinessLogic
 
         public List<string> GetWords(int skip, int take)
         {
-            return _dictionary.Keys.Skip(skip).Take(take).ToList(); ;
+            return _em.Words.OrderBy(x => x.Word).Select(x => x.Word).Skip(skip).Take(take).ToList();
         }
 
         public Dictionary<string, int> GetWordsDictionary()
         {
-            return _dictionary;
+            Dictionary<string, int> wordsList = new Dictionary<string, int>();
+            var result = _em.Words;
+
+            foreach (var w in result)
+            {
+                if (!wordsList.ContainsKey(w.Word))
+                {
+                    wordsList.Add(w.Word, 1);
+                }
+            }
+
+            return wordsList;
         }
     }
 }
