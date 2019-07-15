@@ -1,20 +1,17 @@
 ﻿using AnagramSolver.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
     public class DatabaseWordRepository : IWordRepository
     {
-        private Dictionary<string, int> _dictionary;
+        private List<string> _dictionary;
 
         public DatabaseWordRepository()
         {
-            Dictionary<string, int> wordsList = new Dictionary<string, int>();
+            List<string> wordsList = new List<string>();
 
             string sql = @"INSERT INTO dbo.Words (Word) VALUES (test)";
 
@@ -28,9 +25,9 @@ namespace AnagramSolver.BusinessLogic
                     {
                         while (reader.Read())
                         {
-                            if (!wordsList.ContainsKey(reader["Word"].ToString()))
+                            if (!wordsList.Contains(reader["Word"].ToString()))
                             {
-                                wordsList.Add(reader["Word"].ToString(), 1);
+                                wordsList.Add(reader["Word"].ToString());
                             }
                         }
                     }
@@ -42,7 +39,7 @@ namespace AnagramSolver.BusinessLogic
 
         public List<string> GetWords(int skip, int take)
         {
-            return _dictionary.Keys.ToList().Skip(skip * take).Take(take).ToList();
+            return _dictionary.OrderBy(x => x).Skip(skip * take).Take(take).ToList();
         }
 
         public void AddWord(string input)
@@ -52,18 +49,17 @@ namespace AnagramSolver.BusinessLogic
 
             KeyValuePair<string, int> keyValue;
 
-            if (!_dictionary.ContainsKey(inputWords[0]))
+            if (!_dictionary.Contains(inputWords[0]))
             {
-                _dictionary.Add(inputWords[0], Int32.Parse(inputWords[inputWords.Length - 1]));
+                _dictionary.Add(inputWords[0]);
             }
-            if (!_dictionary.ContainsKey(inputWords[inputWords.Length - 2]))
+            if (!_dictionary.Contains(inputWords[inputWords.Length - 2]))
             {
-                _dictionary.Add(inputWords[inputWords.Length - 2], Int32.Parse(inputWords[inputWords.Length - 1]));
+                _dictionary.Add(inputWords[inputWords.Length - 2]);
             }
-
         }
 
-        public Dictionary<string, int> GetWordsDictionary()
+        public List<string> GetWordsDictionary()
         {
             return _dictionary;
         }

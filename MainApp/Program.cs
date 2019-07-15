@@ -1,10 +1,7 @@
-﻿
-using AnagramSolver.BusinessLogic;
+﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 
 namespace AnagramSolver.Console
 {
@@ -17,7 +14,7 @@ namespace AnagramSolver.Console
 
             IWordRepository reader = new FileWordRepository("zodynas.txt");
 
-            Dictionary<string, int> wordsList = reader.GetWordsDictionary();
+            List<string> wordsList = reader.GetWordsDictionary();
 
             IAnagramSolver solver = new AnagramSolverSingleWord(reader);
             var anagrams = solver.GetAnagrams("sula liaideta");
@@ -26,11 +23,6 @@ namespace AnagramSolver.Console
             {
                 System.Console.WriteLine(s);
             }
-            
-            //Dictionary<string, int> wordsList = new Dictionary<string, int>() { { "labas", 1 }, { "l", 1 }, { "aba", 1 }, { "s", 1 }, { "ba", 1 } };
-            //IAnagramSolver solver = new AnagramSolverRecursive(wordsList);
-            //List<string> anagrams = solver.GetAnagrams("lbas ba").ToList();
         }
-
     }
 }

@@ -16,14 +16,14 @@ namespace AnagramSolver.WebApp.Tests
         [SetUp]
         public void Setup()
         {
-            _wordRepository = new FileWordRepository("zodynas.txt");
-            _anagramSolver = new AnagramSolverSingleWord(_wordRepository);
+            //_wordRepository = new FileWordRepository("zodynas.txt");
+            //_anagramSolver = new AnagramSolverSingleWord(_wordRepository);
         }
 
         [Test]
         public void Form_ValidWord_ReturnsAnagrams()
         {
-
+            Assert.That(1 == 1);
         }
     }
 }

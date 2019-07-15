@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AnagramSolver.Contracts
 {
     public interface IWordRepository
     {
-        Dictionary<string,int> GetWordsDictionary();
+        List<string> GetWordsDictionary();
         List<string> GetWords(int skip, int take);
         void AddWord(string input);
     }

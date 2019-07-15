@@ -1,16 +1,14 @@
 ﻿using AnagramSolver.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
     public class AnagramSolverRecursive : IAnagramSolver
     {
-        private Dictionary<string, int> _words;
+        private List<string> _words;
         
-
-        public AnagramSolverRecursive(Dictionary<string, int> words)
+        public AnagramSolverRecursive(List<string> words)
         {
             _words = words;
         }
@@ -40,9 +38,6 @@ namespace AnagramSolver.BusinessLogic
 
         public List<string> GetAnagramsRecursively(Dictionary<char, int> inputChars, int lastIndex, List<int> listOfIndexes)
         {
-            
-            
-
             return new List<string>();
         }
     }

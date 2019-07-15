@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using AnagramSolver.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,9 +24,9 @@ namespace AnagramSolver.WebApp.Controllers
 
             var myStringBuilder = new StringBuilder();
 
-            foreach (KeyValuePair<string, int> pair in _wordRepository.GetWordsDictionary())
+            foreach (string word in _wordRepository.GetWordsDictionary())
             {
-                myStringBuilder.AppendFormat("{0} {1}\r\n", pair.Key, pair.Value);
+                myStringBuilder.AppendFormat("{0}\r\n", word);
             }
 
             var enc = new UTF8Encoding();

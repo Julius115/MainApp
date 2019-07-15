@@ -1,9 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace AnagramSolver.LoadToDB.Console
 {
@@ -15,7 +13,7 @@ namespace AnagramSolver.LoadToDB.Console
         {
             _wordRepository = new FileWordRepository("zodynas.txt");
 
-            Dictionary<string, int> wordsList = _wordRepository.GetWordsDictionary();
+            List<string> wordsList = _wordRepository.GetWordsDictionary();
 
             string sql = @"INSERT INTO dbo.Words (Word) VALUES (test)";
 
@@ -28,9 +26,9 @@ namespace AnagramSolver.LoadToDB.Console
             SqlCommand cmd = new SqlCommand(SQLstr, conn);
             cmd.Parameters.Add("@WORD", System.Data.SqlDbType.VarChar);
 
-            foreach (KeyValuePair<string, int> key in _wordRepository.GetWordsDictionary())
+            foreach (string word in _wordRepository.GetWordsDictionary())
             {
-                cmd.Parameters["@WORD"].Value = key.Key.ToString();
+                cmd.Parameters["@WORD"].Value = word;
                 cmd.ExecuteNonQuery();
             }
 

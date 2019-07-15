@@ -1,15 +1,13 @@
 ﻿using AnagramSolver.Contracts;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
     public class AnagramSolverSingleWord : IAnagramSolver
     {
-        private Dictionary<string, int> _words;
+        private List<string> _words;
         private readonly IWordRepository _wordRepository;
 
         public AnagramSolverSingleWord (IWordRepository wordRepository)
@@ -26,11 +24,11 @@ namespace AnagramSolver.BusinessLogic
 
             foreach (string s in _input)
             {
-                foreach (var keyValue in _words)
+                foreach (string word in _words)
                 {
-                    if (String.Concat(s.OrderBy(c => c)).Equals(String.Concat(keyValue.Key.OrderBy(c => c))) && !anagrams.Contains(keyValue.Key))
+                    if (String.Concat(s.OrderBy(c => c)).Equals(String.Concat(word.OrderBy(c => c))) && !anagrams.Contains(word))
                     {
-                        anagrams.Add(keyValue.Key);
+                        anagrams.Add(word);
                     }
                 }
             }

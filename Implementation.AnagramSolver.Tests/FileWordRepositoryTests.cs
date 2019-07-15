@@ -1,9 +1,6 @@
 ﻿using AnagramSolver.Contracts;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace AnagramSolver.BusinessLogic.Tests
 {
@@ -44,9 +41,9 @@ namespace AnagramSolver.BusinessLogic.Tests
             var result = _wordRepository.GetWordsDictionary();
 
             Assert.That(result.Count == 4);
-            Assert.That(result.ContainsKey("lasa"));
-            Assert.That(result.ContainsKey("sula"));
-            Assert.That(result.ContainsKey("salu"));
+            Assert.That(result.Contains("lasa"));
+            Assert.That(result.Contains("sula"));
+            Assert.That(result.Contains("salu"));
         }
 
         [Test]
@@ -62,7 +59,7 @@ namespace AnagramSolver.BusinessLogic.Tests
             var result = _wordRepository.GetWordsDictionary();
 
             Assert.That(result.Count == 1);
-            Assert.That(result.ContainsKey("lasa"));
+            Assert.That(result.Contains("lasa"));
         }
     }
 }

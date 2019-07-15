@@ -7,13 +7,6 @@ using AnagramSolver.WebApp.Models;
 using AnagramSolver.Contracts;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using RestSharp;
-using System.Net;
-using System.Data.SqlClient;
-using System.Data;
-using AnagramSolver.BusinessLogic;
-using AnagramSolver.EF.DatabaseFirst.Repositories;
-using Microsoft.EntityFrameworkCore;
 using AnagramSolver.Services;
 
 namespace AnagramSolver.WebApp.Controllers
@@ -132,7 +125,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             List<string> inputList = input.Split().ToList();
 
-            if (!_wordRepository.GetWordsDictionary().Keys.Contains(inputList.First()))
+            if (!_wordRepository.GetWordsDictionary().Contains(inputList.First()))
             {
                 using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
                 {
