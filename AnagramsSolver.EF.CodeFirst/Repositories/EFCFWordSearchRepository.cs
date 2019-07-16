@@ -17,17 +17,16 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public SearchInfoModel GetSearchInfo(string word, DateTime date)
         {
-            //SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord == word)
-            //    .Select(u => new SearchInfoModel
-            //    {
-            //        UserIp = u.UserIp,
-            //        RequestDate = u.RequestDate,
-            //        RequestWord = u.RequestWord,
-            //        Anagrams = _em.CachedWords.Where(x => x.RequestWord == u.RequestWord)
-            //                                    .Select(x => x.ResponseWordNavigation.WordValue).ToList()
-            //    }).First();
+            SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord == word)
+                .Select(u => new SearchInfoModel
+                {
+                    UserIp = u.UserIp,
+                    RequestDate = u.RequestDate,
+                    RequestWord = u.RequestWord,
+                    //Anagrams = u. .Select(x => x.Word.WordValue).ToList()
+                }).First();
 
-            return null;
+            return searchInfoModel;
         }
 
         public List<string> GetWordsContainingPart(string input)

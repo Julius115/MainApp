@@ -29,7 +29,7 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
             {
                 CachedWord cachedWord = new CachedWord();
                 cachedWord.RequestWord = requestWord;
-                //cachedWord.ResponseWord = _em.Words.Where(w => w.WordValue == anagram).Single().Id;
+                cachedWord.WordId = _em.Words.Where(w => w.WordValue == anagram).Single().Id;
                 _em.CachedWords.Add(cachedWord);
             }
 
@@ -38,9 +38,9 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public List<string> GetCachedAnagrams(string requestWord)
         {
-            //var anagrams = _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(x => x.ResponseWordNavigation.WordValue).ToList();
+            var anagrams = _em.CachedWords.Where(c => c.RequestWord == requestWord).Select(x => x.Word.WordValue).ToList();
 
-            return null;
+            return anagrams;
         }
     }
 }

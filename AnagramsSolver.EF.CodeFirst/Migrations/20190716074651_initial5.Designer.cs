@@ -4,14 +4,16 @@ using AnagramSolver.EF.CodeFirst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AnagramSolver.EF.CodeFirst.Migrations
 {
     [DbContext(typeof(AnagramsDbCfContext))]
-    partial class AnagramsDbCfContextModelSnapshot : ModelSnapshot
+    [Migration("20190716074651_initial5")]
+    partial class initial5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,13 +27,12 @@ namespace AnagramSolver.EF.CodeFirst.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("RequestWord");
+                    b.Property<string>("RequestWord")
+                        .IsRequired();
 
                     b.Property<int>("WordId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RequestWord");
 
                     b.HasIndex("WordId");
 
@@ -46,12 +47,13 @@ namespace AnagramSolver.EF.CodeFirst.Migrations
 
                     b.Property<DateTime>("RequestDate");
 
-                    b.Property<string>("RequestWord")
-                        .IsRequired();
+                    b.Property<string>("RequestWord");
 
                     b.Property<string>("UserIp");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RequestWord");
 
                     b.ToTable("UserLogs");
                 });
@@ -71,15 +73,18 @@ namespace AnagramSolver.EF.CodeFirst.Migrations
 
             modelBuilder.Entity("AnagramSolver.EF.CodeFirst.AnagramsDbCfContext+CachedWord", b =>
                 {
-                    b.HasOne("AnagramSolver.EF.CodeFirst.AnagramsDbCfContext+UserLog", "UserLog")
-                        .WithMany("CachedWords")
-                        .HasForeignKey("RequestWord")
-                        .HasPrincipalKey("RequestWord");
-
                     b.HasOne("AnagramSolver.EF.CodeFirst.AnagramsDbCfContext+Word", "Word")
                         .WithMany("CachedWords")
                         .HasForeignKey("WordId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AnagramSolver.EF.CodeFirst.AnagramsDbCfContext+UserLog", b =>
+                {
+                    b.HasOne("AnagramSolver.EF.CodeFirst.AnagramsDbCfContext+CachedWord", "CachedWord")
+                        .WithMany("UserLogs")
+                        .HasForeignKey("RequestWord")
+                        .HasPrincipalKey("RequestWord");
                 });
 #pragma warning restore 612, 618
         }
