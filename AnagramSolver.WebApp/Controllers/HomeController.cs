@@ -60,9 +60,9 @@ namespace AnagramSolver.WebApp.Controllers
                 Response.Cookies.Append("inputWord", id, options);
             }
 
-            _logger.Log(id, HttpContext.Connection.LocalIpAddress.ToString());
+            //_logger.Log(id, HttpContext.Connection.LocalIpAddress.ToString());
 
-            return View(_cachedWordsService.CacheWords(id));
+            return View(_cachedWordsService.CacheWords(id, HttpContext.Connection.LocalIpAddress.ToString()));
         }
 
         public IActionResult SearchInfo(string word, DateTime date)

@@ -18,23 +18,21 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
         }
         public void AddWord(string input)
         {
-            Word word = new Word();
-            word.WordValue = input;
-
-            _em.Words.Add(word);
-            _em.SaveChanges();
+            //Word word = new Word();
+            //word.WordValue = input;
+            //
+            //_em.Words.Add(word);
+            //_em.SaveChanges();
         }
 
         public List<string> GetWords(int skip, int take)
         {
-            return _em.Words.OrderBy(x => x.WordValue).Select(x => x.WordValue).Skip(skip).Take(take).ToList();
+            return _em.DictionaryWords.OrderBy(x => x.Word).Select(x => x.Word).Skip(skip * take).Take(take).ToList();
         }
 
         public List<string> GetWordsDictionary()
         {
-            List<string> wordsList = _em.Words.OrderBy(x => x.WordValue).Select(x => x.WordValue).ToList();
-
-            return wordsList;
+            return _em.DictionaryWords.OrderBy(x => x.Word).Select(x => x.Word).ToList();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace AnagramSolver.LoadToDB.Console
             
             conn.Open();
 
-            string SQLstr = "INSERT INTO Words (WordValue)" +
+            string SQLstr = "INSERT INTO DictionaryWords (Word)" +
                "VALUES (@WORD)";
             SqlCommand cmd = new SqlCommand(SQLstr, conn);
             cmd.Parameters.Add("@WORD", System.Data.SqlDbType.VarChar);

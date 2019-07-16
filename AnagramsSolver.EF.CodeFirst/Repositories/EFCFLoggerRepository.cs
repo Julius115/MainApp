@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static AnagramSolver.EF.CodeFirst.AnagramsDbCfContext;
 
@@ -18,7 +19,7 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
         public void Log(string requestWord, string userIp)
         {
             UserLog userLog = new UserLog();
-            userLog.RequestWord = requestWord;
+            userLog.RequestWordId = _em.RequestWords.Where(r => r.Word == requestWord).Select(r => r.Id).FirstOrDefault();
             userLog.UserIp = userIp;
             userLog.RequestDate = DateTime.Now;
 

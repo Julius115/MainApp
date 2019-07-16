@@ -17,28 +17,39 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public SearchInfoModel GetSearchInfo(string word, DateTime date)
         {
-            SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord == word)
-                .Select(u => new SearchInfoModel
-                {
-                    UserIp = u.UserIp,
-                    RequestDate = u.RequestDate,
-                    RequestWord = u.RequestWord,
-                    //Anagrams = u. .Select(x => x.Word.WordValue).ToList()
-                }).First();
+            //SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord == word && u.RequestDate == date)
+            //    .Select(u => new SearchInfoModel
+            //    {
+            //        UserIp = u.UserIp,
+            //        RequestDate = u.RequestDate,
+            //        RequestWord = u.RequestWord,
+            //        Anagrams = u.CachedWords.Select(x => x.Word.WordValue).ToList()
+            //    }).First();
+            //
+            //return searchInfoModel;
 
-            return searchInfoModel;
+            //SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord.Word == word && u.RequestDate == date)
+            //    .Select(u => new SearchInfoModel
+            //    {
+            //        UserIp = u.UserIp,
+            //        RequestDate = u.RequestDate,
+            //        RequestWord = u.RequestWord.Word,
+            //        //Anagrams = u.Ca
+            //    });
+            //SearchInfoModel searchInfoModel = _em.RequestWords.Where(r => r.Word == word)
+            return null;
         }
 
-        public List<string> GetWordsContainingPart(string input)
+        public List<string> GetWordsContainingPart(string searchPhrase)
         {
-            List<string> wordsResult = _em.Words.Where(w => w.WordValue.Contains(input)).Select(w => w.WordValue).ToList();
+            List<string> searchResults = _em.DictionaryWords.Where(d => d.Word.Contains(searchPhrase)).Select(d => d.Word).ToList();
 
-            return wordsResult;
+            return searchResults;
         }
 
         public List<SearchHistoryInfoModel> GetSearchHistory()
         {
-            List<SearchHistoryInfoModel> searchHistoryInfoModels = _em.UserLogs.Select(u => new SearchHistoryInfoModel() { Ip = u.UserIp, RequestDate = u.RequestDate, RequestWord = u.RequestWord }).ToList();
+            List<SearchHistoryInfoModel> searchHistoryInfoModels = _em.UserLogs.Select(u => new SearchHistoryInfoModel() { Ip = u.UserIp, RequestDate = u.RequestDate, RequestWord = u.RequestWord.Word }).ToList();
 
             return searchHistoryInfoModels;
         }
