@@ -1,8 +1,6 @@
 ﻿using AnagramSolver.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using static AnagramSolver.EF.CodeFirst.AnagramsDbCfContext;
 
 namespace AnagramSolver.EF.CodeFirst.Repositories

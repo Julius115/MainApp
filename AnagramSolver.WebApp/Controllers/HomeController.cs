@@ -60,8 +60,6 @@ namespace AnagramSolver.WebApp.Controllers
                 Response.Cookies.Append("inputWord", id, options);
             }
 
-            //_logger.Log(id, HttpContext.Connection.LocalIpAddress.ToString());
-
             return View(_cachedWordsService.CacheWords(id, HttpContext.Connection.LocalIpAddress.ToString()));
         }
 

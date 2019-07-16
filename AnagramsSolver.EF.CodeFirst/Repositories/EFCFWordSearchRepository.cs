@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AnagramSolver.EF.CodeFirst.Repositories
 {
@@ -17,27 +16,16 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public SearchInfoModel GetSearchInfo(string word, DateTime date)
         {
-            //SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord == word && u.RequestDate == date)
-            //    .Select(u => new SearchInfoModel
-            //    {
-            //        UserIp = u.UserIp,
-            //        RequestDate = u.RequestDate,
-            //        RequestWord = u.RequestWord,
-            //        Anagrams = u.CachedWords.Select(x => x.Word.WordValue).ToList()
-            //    }).First();
-            //
-            //return searchInfoModel;
+            SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord.Word == word && (u.RequestDate.ToString("yyyy-MM-dd HH:mm:ss.fff") == date.ToString("yyyy-MM-dd HH:mm:ss.fff")))
+                .Select(u => new SearchInfoModel
+                {
+                    UserIp = u.UserIp,
+                    RequestDate = u.RequestDate,
+                    RequestWord = u.RequestWord.Word,
+                    Anagrams = u.RequestWord.CachedWords.Select(c => c.DictionaryWord.Word).ToList()
+                }).First() ;
 
-            //SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord.Word == word && u.RequestDate == date)
-            //    .Select(u => new SearchInfoModel
-            //    {
-            //        UserIp = u.UserIp,
-            //        RequestDate = u.RequestDate,
-            //        RequestWord = u.RequestWord.Word,
-            //        //Anagrams = u.Ca
-            //    });
-            //SearchInfoModel searchInfoModel = _em.RequestWords.Where(r => r.Word == word)
-            return null;
+            return searchInfoModel;
         }
 
         public List<string> GetWordsContainingPart(string searchPhrase)
