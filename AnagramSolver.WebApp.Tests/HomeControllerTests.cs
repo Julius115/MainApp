@@ -10,8 +10,8 @@ namespace AnagramSolver.WebApp.Tests
     [TestFixture]
     class HomeControllerTests
     {
-        private IAnagramSolver _anagramSolver;
-        private IWordRepository _wordRepository;
+        //private IAnagramSolver _anagramSolver;
+        //private IWordRepository _wordRepository;
 
         [SetUp]
         public void Setup()

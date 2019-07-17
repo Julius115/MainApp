@@ -10,12 +10,14 @@ namespace AnagramSolver.Services
         private readonly ICachedWords _cachedWords;
         private readonly IAnagramSolver _anagramSolver;
         private readonly ILogger _logger;
+        private readonly IRequestWordContract _requestWordContract;
 
-        public CachedWordsService(ICachedWords cachedWords, IAnagramSolver anagramSolver, ILogger logger)
+        public CachedWordsService(ICachedWords cachedWords, IAnagramSolver anagramSolver, ILogger logger, IRequestWordContract requestWordContract)
         {
             _cachedWords = cachedWords;
             _anagramSolver = anagramSolver;
             _logger = logger;
+            _requestWordContract = requestWordContract;
         }
 
         public List<string> CacheWords(string requestWord, string userIp)
@@ -27,6 +29,7 @@ namespace AnagramSolver.Services
             }
 
             List<string> anagrams = _anagramSolver.GetAnagrams(requestWord).ToList();
+            _requestWordContract.SetRequestWord(requestWord);
             _cachedWords.SetCachedAnagrams(anagrams, requestWord);
             _logger.Log(requestWord, userIp);
 

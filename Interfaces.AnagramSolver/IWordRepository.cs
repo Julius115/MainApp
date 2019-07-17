@@ -7,5 +7,6 @@ namespace AnagramSolver.Contracts
         List<string> GetWordsDictionary();
         List<string> GetWords(int skip, int take);
         void AddWord(string input);
+        List<string> GetWordsContainingPart(string searchPhrase);
     }
 }

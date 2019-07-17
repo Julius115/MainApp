@@ -60,5 +60,10 @@ namespace AnagramSolver.BusinessLogic
         {
             return _dictionary;
         }
+
+        public List<string> GetWordsContainingPart(string searchPhrase)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

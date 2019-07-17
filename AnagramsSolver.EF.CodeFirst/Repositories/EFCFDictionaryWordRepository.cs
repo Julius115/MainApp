@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace AnagramSolver.EF.CodeFirst.Repositories
 {
-    public class EFCFWordRepository : IWordRepository
+    public class EFCFDictionaryWordRepository : IWordRepository
     {
         private readonly AnagramsDbCfContext _em;
 
-        public EFCFWordRepository(AnagramsDbCfContext dbContext)
+        public EFCFDictionaryWordRepository(AnagramsDbCfContext dbContext)
         {
             _em = dbContext;
         }
@@ -30,6 +30,13 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
         public List<string> GetWordsDictionary()
         {
             return _em.DictionaryWords.OrderBy(x => x.Word).Select(x => x.Word).ToList();
+        }
+
+        public List<string> GetWordsContainingPart(string searchPhrase)
+        {
+            List<string> searchResults = _em.DictionaryWords.Where(d => d.Word.Contains(searchPhrase)).Select(d => d.Word).ToList();
+
+            return searchResults;
         }
     }
 }

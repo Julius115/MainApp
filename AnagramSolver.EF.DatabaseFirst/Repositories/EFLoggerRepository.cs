@@ -14,6 +14,16 @@ namespace AnagramSolver.EF.DatabaseFirst.Repositories
             _em = dbContext;
         }
 
+        public List<SearchHistoryInfoModel> GetSearchHistory()
+        {
+            throw new NotImplementedException();
+        }
+
+        public SearchInfoModel GetSearchInfo(string word, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Log(string requestWord, string userIp)
         {
             UserLog userLog = new UserLog();

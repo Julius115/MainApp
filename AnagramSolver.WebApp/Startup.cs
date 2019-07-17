@@ -37,17 +37,15 @@ namespace AnagramSolver.WebApp
             var connection = @"Server=(localdb)\mssqllocaldb;Database=AnagramsCFDB;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<AnagramsDbCfContext>(options => options.UseSqlServer(connection));
 
-            //services.AddScoped<AnagramsDbCfContext, AnagramsDbCfContext>(); 
-
             services.AddScoped<AnagramsDBContext, AnagramsDBContext>();
             
-            services.AddScoped<IWordRepository, EFCFWordRepository>();
+            services.AddScoped<IWordRepository, EFCFDictionaryWordRepository>();
             services.AddScoped<IAnagramSolver, AnagramSolverSingleWord>();
             services.AddScoped<IDatabaseManager, EFCFControlRepository>();
-            services.AddScoped<ICachedWords, EFCFCachedWordsRepository>();
-            services.AddScoped<ILogger, EFCFLoggerRepository>();
-            services.AddScoped<IWordSearch, EFCFWordSearchRepository>();
+            services.AddScoped<ICachedWords, EFCFCachedWordRepository>();
+            services.AddScoped<ILogger, EFCFUserLogRepository>();
             services.AddScoped<CachedWordsService, CachedWordsService>();
+            services.AddScoped<IRequestWordContract, EFCFRequestWordRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

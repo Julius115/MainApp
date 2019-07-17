@@ -27,6 +27,11 @@ namespace AnagramSolver.BusinessLogic
             return _em.Words.OrderBy(x => x.Word).Select(x => x.Word).Skip(skip).Take(take).ToList();
         }
 
+        public List<string> GetWordsContainingPart(string searchPhrase)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<string> GetWordsDictionary()
         {
             List<string> wordsList = _em.Words.OrderBy(x => x.Word).Select(x => x.Word).ToList();

@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace AnagramSolver.EF.CodeFirst.Repositories
 {
-    public class EFCFCachedWordsRepository : ICachedWords
+    public class EFCFCachedWordRepository : ICachedWords
     {
         private readonly AnagramsDbCfContext _em;
 
-        public EFCFCachedWordsRepository(AnagramsDbCfContext dbContext)
+        public EFCFCachedWordRepository(AnagramsDbCfContext dbContext)
         {
             _em = dbContext;
         }
@@ -22,13 +22,6 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public void SetCachedAnagrams(List<string> anagrams, string requestWord)
         {
-            if (_em.RequestWords.Where(r => r.Word == requestWord).Count() == 0) {
-                RequestWord requestWordObject = new RequestWord();
-                requestWordObject.Word = requestWord;
-                _em.RequestWords.Add(requestWordObject);
-                _em.SaveChanges();
-            }
-
             foreach (String anagram in anagrams)
             {
                 CachedWord cachedWord = new CachedWord();

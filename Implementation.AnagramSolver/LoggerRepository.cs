@@ -14,6 +14,17 @@ namespace AnagramSolver.BusinessLogic
         {
             _connectionString = connectionString;
         }
+
+        public List<SearchHistoryInfoModel> GetSearchHistory()
+        {
+            throw new NotImplementedException();
+        }
+
+        public SearchInfoModel GetSearchInfo(string word, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Log(string requestWord, string userIp)
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))

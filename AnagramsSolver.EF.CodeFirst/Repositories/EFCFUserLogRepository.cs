@@ -1,17 +1,29 @@
 ﻿using AnagramSolver.Contracts;
+using AnagramSolver.EF.CodeFirst.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AnagramSolver.EF.CodeFirst.Repositories
 {
-    public class EFCFWordSearchRepository :IWordSearch
+    public class EFCFUserLogRepository :ILogger
     {
         private readonly AnagramsDbCfContext _em;
 
-        public EFCFWordSearchRepository(AnagramsDbCfContext dbContext)
+        public EFCFUserLogRepository(AnagramsDbCfContext dbContext)
         {
             _em = dbContext;
+        }
+
+        public void Log(string requestWord, string userIp)
+        {
+            UserLog userLog = new UserLog();
+            userLog.RequestWordId = _em.RequestWords.Where(r => r.Word == requestWord).Select(r => r.Id).FirstOrDefault();
+            userLog.UserIp = userIp;
+            userLog.RequestDate = DateTime.Now;
+
+            _em.UserLogs.Add(userLog);
+            _em.SaveChanges();
         }
 
         public SearchInfoModel GetSearchInfo(string word, DateTime date)
@@ -23,16 +35,9 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
                     RequestDate = u.RequestDate,
                     RequestWord = u.RequestWord.Word,
                     Anagrams = u.RequestWord.CachedWords.Select(c => c.DictionaryWord.Word).ToList()
-                }).First() ;
+                }).First();
 
             return searchInfoModel;
-        }
-
-        public List<string> GetWordsContainingPart(string searchPhrase)
-        {
-            List<string> searchResults = _em.DictionaryWords.Where(d => d.Word.Contains(searchPhrase)).Select(d => d.Word).ToList();
-
-            return searchResults;
         }
 
         public List<SearchHistoryInfoModel> GetSearchHistory()

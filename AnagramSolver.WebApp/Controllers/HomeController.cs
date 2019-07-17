@@ -17,16 +17,14 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly IWordRepository _wordRepository;
         private readonly ILogger _logger;
         private readonly IDatabaseManager _databaseManager;
-        private readonly IWordSearch _wordSearchRepository;
         private readonly CachedWordsService _cachedWordsService;
 
-        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ILogger logger, IWordSearch wordSearch, CachedWordsService cachedWordsService)
+        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ILogger logger, CachedWordsService cachedWordsService)
         {
             _anagramSolver = anagramSolver;
             _wordRepository = wordRepository;
             _databaseManager = databaseManager;
             _logger = logger;
-            _wordSearchRepository = wordSearch;
             _cachedWordsService = cachedWordsService;
         }
 
@@ -65,7 +63,7 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult SearchInfo(string word, DateTime date)
         {
-            SearchInfoModel searchInfoResult = _wordSearchRepository.GetSearchInfo(word, date);
+            SearchInfoModel searchInfoResult = _logger.GetSearchInfo(word, date);
 
             SearchInfoViewModel searchInfo = new SearchInfoViewModel();
 
@@ -85,7 +83,7 @@ namespace AnagramSolver.WebApp.Controllers
         {
             List<SearchHistoryViewModel> searchHistory = new List<SearchHistoryViewModel>();
 
-            List<SearchHistoryInfoModel> searchHistoryResult = _wordSearchRepository.GetSearchHistory();
+            List<SearchHistoryInfoModel> searchHistoryResult = _logger.GetSearchHistory();
 
             foreach (SearchHistoryInfoModel s in searchHistoryResult)
             {
@@ -147,7 +145,7 @@ namespace AnagramSolver.WebApp.Controllers
             WordSearchViewModel wordSearch = new WordSearchViewModel();
 
             wordSearch.SearchedWord = id;
-            wordSearch.WordsToDisplay = _wordSearchRepository.GetWordsContainingPart(id);
+            wordSearch.WordsToDisplay = _wordRepository.GetWordsContainingPart(id);
 
             return View(wordSearch);
         }
