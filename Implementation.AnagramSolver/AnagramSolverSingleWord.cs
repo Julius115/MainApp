@@ -35,5 +35,10 @@ namespace AnagramSolver.BusinessLogic
 
             return anagrams;
         }
+
+        public void AddAnagram(string anagram)
+        {
+            _words.Add(anagram);
+        }
     }
 }

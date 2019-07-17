@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts;
+using AnagramSolver.EF.CodeFirst.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,11 +15,11 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
         }
         public void AddWord(string input)
         {
-            //Word word = new Word();
-            //word.WordValue = input;
-            //
-            //_em.Words.Add(word);
-            //_em.SaveChanges();
+            DictionaryWord word = new DictionaryWord();
+            word.Word = input;
+
+            _em.DictionaryWords.Add(word);
+            _em.SaveChanges();
         }
 
         public List<string> GetWords(int skip, int take)

@@ -1,7 +1,7 @@
 ﻿using AnagramSolver.Contracts;
+using AnagramSolver.EF.CodeFirst.Models;
 using System;
 using System.Linq;
-using static AnagramSolver.EF.CodeFirst.AnagramsDbCfContext;
 
 namespace AnagramSolver.EF.CodeFirst.Repositories
 {
