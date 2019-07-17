@@ -17,15 +17,17 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly IWordRepository _wordRepository;
         private readonly ILogger _logger;
         private readonly IDatabaseManager _databaseManager;
-        private readonly CachedWordsService _cachedWordsService;
+        private readonly AnagramsSearchService _anagramsSearchService;
+        private readonly DictionaryManagingService _dictionaryManagaingService;
 
-        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ILogger logger, CachedWordsService cachedWordsService)
+        public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ILogger logger, AnagramsSearchService anagramsSearchService, DictionaryManagingService dictionaryManagingService)
         {
             _anagramSolver = anagramSolver;
             _wordRepository = wordRepository;
             _databaseManager = databaseManager;
             _logger = logger;
-            _cachedWordsService = cachedWordsService;
+            _anagramsSearchService = anagramsSearchService;
+            _dictionaryManagaingService = dictionaryManagingService;
         }
 
         [HttpGet]
@@ -58,7 +60,24 @@ namespace AnagramSolver.WebApp.Controllers
                 Response.Cookies.Append("inputWord", id, options);
             }
 
-            return View(_cachedWordsService.CacheWords(id, HttpContext.Connection.LocalIpAddress.ToString()));
+            // rename service to anagramSearchService.GetAnagrams()
+            // has to return new model with bools: cannotSearch;
+            //List<string> anagrams = _cachedWordsService.CacheWords(id, HttpContext.Connection.LocalIpAddress.ToString());
+            //if (anagramModel.cannotSearch)
+            //{
+            //    return View("Not allowed to search, offer to insert word to dictionary");
+            //}
+
+            AnagramsSearchInfoModel anagramsSearchResult = _anagramsSearchService.GetAnagrams(id, HttpContext.Connection.LocalIpAddress.ToString());
+
+            if (!anagramsSearchResult.isValidToSearch)
+            {
+                return View("NotAllowedToSearch");
+            }
+
+            return View(anagramsSearchResult.Anagrams);
+
+            //return View(_cachedWordsService.CacheWords(id, HttpContext.Connection.LocalIpAddress.ToString()));
         }
 
         public IActionResult SearchInfo(string word, DateTime date)
@@ -112,26 +131,28 @@ namespace AnagramSolver.WebApp.Controllers
             return View();
         }
 
-        public IActionResult WriteToFile(string input)
+        public IActionResult AddWord(string input)
         {
             if (String.IsNullOrEmpty(input))
             {
                 return View();
             }
 
-            List<string> inputList = input.Split().ToList();
-
-            if (!_wordRepository.GetWordsDictionary().Contains(inputList.First()))
-            {
-                using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
-                {
-                    sw.WriteLine(input);
-                }
-            }
-
-            _wordRepository.AddWord(inputList.First());
+            _dictionaryManagaingService.AddWord(input, HttpContext.Connection.LocalIpAddress.ToString());
 
             return View();
+        }
+
+        public IActionResult EditWord(string originalWord, string newWord)
+        {
+            if (String.IsNullOrEmpty(newWord))
+            {
+                return View("EditWord", originalWord);
+            }
+
+            //_dictionaryManagaingService.EditWord(originalWord, newWord, userip)
+
+            return null;
         }
 
         public IActionResult WordSearch(string id)

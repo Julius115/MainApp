@@ -22,7 +22,7 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public void SetCachedAnagrams(List<string> anagrams, string requestWord)
         {
-            foreach (String anagram in anagrams)
+            foreach (string anagram in anagrams)
             {
                 CachedWord cachedWord = new CachedWord();
                 cachedWord.RequestWordId = _em.RequestWords.Where(r => r.Word == requestWord).Select(r => r.Id).FirstOrDefault();

@@ -19,8 +19,9 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
         {
             UserLog userLog = new UserLog();
             userLog.RequestWordId = _em.RequestWords.Where(r => r.Word == requestWord).Select(r => r.Id).FirstOrDefault();
-            userLog.UserIp = userIp;
+            userLog.UserId = _em.Users.Where(u => u.UserIp == userIp).Select(u => u.Id).FirstOrDefault();
             userLog.RequestDate = DateTime.Now;
+            
 
             _em.UserLogs.Add(userLog);
             _em.SaveChanges();
@@ -31,7 +32,8 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
             SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord.Word == word && (u.RequestDate.ToString("yyyy-MM-dd HH:mm:ss.fff") == date.ToString("yyyy-MM-dd HH:mm:ss.fff")))
                 .Select(u => new SearchInfoModel
                 {
-                    UserIp = u.UserIp,
+                    //UserIp = u.UserIp,
+                    UserIp = u.User.UserIp,
                     RequestDate = u.RequestDate,
                     RequestWord = u.RequestWord.Word,
                     Anagrams = u.RequestWord.CachedWords.Select(c => c.DictionaryWord.Word).ToList()
@@ -42,7 +44,7 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public List<SearchHistoryInfoModel> GetSearchHistory()
         {
-            List<SearchHistoryInfoModel> searchHistoryInfoModels = _em.UserLogs.Select(u => new SearchHistoryInfoModel() { Ip = u.UserIp, RequestDate = u.RequestDate, RequestWord = u.RequestWord.Word }).ToList();
+            List<SearchHistoryInfoModel> searchHistoryInfoModels = _em.UserLogs.Select(u => new SearchHistoryInfoModel() { Ip = u.User.UserIp, RequestDate = u.RequestDate, RequestWord = u.RequestWord.Word }).ToList();
 
             return searchHistoryInfoModels;
         }

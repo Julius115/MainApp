@@ -4,14 +4,16 @@ using AnagramSolver.EF.CodeFirst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AnagramSolver.EF.CodeFirst.Migrations
 {
     [DbContext(typeof(AnagramsDbCfContext))]
-    partial class AnagramsDbCfContextModelSnapshot : ModelSnapshot
+    [Migration("20190717105252_AddUserTable")]
+    partial class AddUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +27,7 @@ namespace AnagramSolver.EF.CodeFirst.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DictionaryWordId");
+                    b.Property<int>("DictionaryWordId");
 
                     b.Property<int>("RequestWordId");
 
@@ -104,7 +106,8 @@ namespace AnagramSolver.EF.CodeFirst.Migrations
                 {
                     b.HasOne("AnagramSolver.EF.CodeFirst.Models.DictionaryWord", "DictionaryWord")
                         .WithMany("CachedWords")
-                        .HasForeignKey("DictionaryWordId");
+                        .HasForeignKey("DictionaryWordId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AnagramSolver.EF.CodeFirst.Models.RequestWord", "RequestWord")
                         .WithMany("CachedWords")

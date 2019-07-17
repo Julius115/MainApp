@@ -1,0 +1,15 @@
+﻿@model  string
+
+@{
+    ViewData["Title"] = "EditWord";
+}
+
+<h2>Edit @Model</h2>
+
+<form method="post" action="@Url.Action("EditWord", "Home", new { originalWord = Model})">
+    <label>new Word</label>
+    <input type="text" , name="newWord" />
+    <br />
+    <button type="submit">Submit</button>
+
+</form>

@@ -12,6 +12,7 @@ namespace AnagramSolver.EF.CodeFirst
         public DbSet<CachedWord> CachedWords { get; set; }
         public DbSet<DictionaryWord> DictionaryWords { get; set; }
         public DbSet<UserLog> UserLogs { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +25,7 @@ namespace AnagramSolver.EF.CodeFirst
                 .HasMany(r => r.UserLogs)
                 .WithOne(u => u.RequestWord)
                 .OnDelete(DeleteBehavior.Cascade);
+
         }
 
     }
