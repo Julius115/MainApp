@@ -68,5 +68,20 @@ namespace AnagramSolver.BusinessLogic
         {
             throw new System.NotImplementedException();
         }
+
+        public bool EditWord(string originalWord, string newWord)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool DeleteWord(string wordToDelete)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        void IWordRepository.DeleteWord(string wordToDelete)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

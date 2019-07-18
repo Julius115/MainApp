@@ -30,5 +30,42 @@ namespace AnagramSolver.Services
                 //}
             }
         }
+
+        public WordEditInfoModel EditWord(WordEditInfoModel wordEditInfoModel, string userIp)
+        {
+            bool isEditSuccessful = _wordRepository.EditWord(wordEditInfoModel.OriginalWord, wordEditInfoModel.NewWord);
+
+            if (isEditSuccessful)
+            {
+                wordEditInfoModel.EditStatus = WordEditStatus.EditSuccessful;
+                wordEditInfoModel.OriginalWord = wordEditInfoModel.NewWord;
+                wordEditInfoModel.NewWord = null;
+
+                _userContract.GiveAdditionalSearch(userIp);
+            }
+            else
+            {
+                wordEditInfoModel.EditStatus = WordEditStatus.EditUnsuccesful;
+                wordEditInfoModel.NewWord = null;
+            }
+
+            return wordEditInfoModel;
+        }
+
+        public WordEditInfoModel DeleteWord(WordEditInfoModel wordEditInfoModel, string userIp)
+        {
+            bool hasCreditsToDelete = _userContract.CheckIfValidToSearch(userIp);
+
+            if (!hasCreditsToDelete)
+            {
+                wordEditInfoModel.EditStatus = WordEditStatus.DeleteDenied;
+                return wordEditInfoModel;
+            }
+
+            _wordRepository.DeleteWord(wordEditInfoModel.OriginalWord);
+            wordEditInfoModel.EditStatus = WordEditStatus.DeleteSuccesful;
+
+            return wordEditInfoModel;
+        }
     }
 }

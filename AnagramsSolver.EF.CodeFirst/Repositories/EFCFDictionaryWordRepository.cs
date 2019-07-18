@@ -27,6 +27,29 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
             return _em.DictionaryWords.OrderBy(x => x.Word).Select(x => x.Word).Skip(skip * take).Take(take).ToList();
         }
 
+        public bool EditWord(string originalWord, string newWord)
+        {
+            if (_em.DictionaryWords.Where(w => w.Word == newWord).Count() > 0)
+            {
+                return false;
+            }
+
+            DictionaryWord word = _em.DictionaryWords.Where(w => w.Word == originalWord).Select(x => x).FirstOrDefault();
+            word.Word = newWord;
+            _em.SaveChanges();
+
+            return true;
+        }
+
+        public void DeleteWord(string wordToDelete)
+        {
+            // check if ip has searches
+            DictionaryWord word = _em.DictionaryWords.Where(w => w.Word == wordToDelete).FirstOrDefault();
+
+            _em.DictionaryWords.Remove(word);
+            _em.SaveChanges();
+        }
+
         public List<string> GetWordsDictionary()
         {
             return _em.DictionaryWords.OrderBy(x => x.Word).Select(x => x.Word).ToList();

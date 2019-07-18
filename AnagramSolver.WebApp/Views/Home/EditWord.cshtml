@@ -1,15 +1,29 @@
-﻿@model  string
+﻿@model AnagramSolver.Contracts.WordEditInfoModel
 
 @{
     ViewData["Title"] = "EditWord";
 }
 
-<h2>Edit @Model</h2>
+<h2>Edit @Model.OriginalWord</h2>
 
-<form method="post" action="@Url.Action("EditWord", "Home", new { originalWord = Model})">
+@if (Model.EditStatus == AnagramSolver.Contracts.WordEditStatus.EditSuccessful)
+{
+    <h3 style="color: green">Edit Succesfull</h3>
+}
+
+@if (Model.EditStatus == AnagramSolver.Contracts.WordEditStatus.EditUnsuccesful)
+{
+    <h3 style="color: Red">Edit UnSuccesfull</h3>
+}
+
+<form method="post" action="@Url.Action("EditWord", "Home", new { originalWord = Model.OriginalWord})">
     <label>new Word</label>
     <input type="text" , name="newWord" />
     <br />
     <button type="submit">Submit</button>
+
+    <input type="button"
+           value="Delete Word"
+           onclick="location.href='@Url.Action("DeleteWord", "Home", new { originalWord = Model.OriginalWord} )'" />
 
 </form>

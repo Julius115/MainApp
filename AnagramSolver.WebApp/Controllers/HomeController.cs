@@ -8,6 +8,7 @@ using AnagramSolver.Contracts;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using AnagramSolver.Services;
+using AnagramSolver.EF.CodeFirst.Models;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -143,21 +144,35 @@ namespace AnagramSolver.WebApp.Controllers
             return View();
         }
 
+        public IActionResult DeleteWord(string originalWord)
+        {
+            WordEditInfoModel wordEditInfoModel = new WordEditInfoModel();
+            wordEditInfoModel.OriginalWord = originalWord;
+
+            wordEditInfoModel = _dictionaryManagaingService.DeleteWord(wordEditInfoModel, HttpContext.Connection.LocalIpAddress.ToString());
+            
+            return View(wordEditInfoModel);
+        }
+
         public IActionResult EditWord(string originalWord, string newWord)
         {
-            if (String.IsNullOrEmpty(newWord))
+            WordEditInfoModel wordEditInfoModel = new WordEditInfoModel();
+
+            wordEditInfoModel.OriginalWord = originalWord;
+            wordEditInfoModel.NewWord = newWord;
+
+            if (String.IsNullOrEmpty(wordEditInfoModel.NewWord))
             {
-                return View("EditWord", originalWord);
+                return View(wordEditInfoModel);
             }
 
-            //_dictionaryManagaingService.EditWord(originalWord, newWord, userip)
+            wordEditInfoModel = _dictionaryManagaingService.EditWord(wordEditInfoModel, HttpContext.Connection.LocalIpAddress.ToString());
 
-            return null;
+            return View(wordEditInfoModel);
         }
 
         public IActionResult WordSearch(string id)
         {
-            
             if (String.IsNullOrEmpty(id))
             {
                 return View();

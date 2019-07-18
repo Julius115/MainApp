@@ -1,0 +1,21 @@
+﻿@model AnagramSolver.Contracts.WordEditInfoModel
+
+@{
+    ViewData["Title"] = "EditWord";
+}
+
+@if (Model.EditStatus == AnagramSolver.Contracts.WordEditStatus.DeleteSuccesful)
+{
+    <h3 style="color: green">@Model.OriginalWord Deleted Successfully</h3>
+}
+else if (Model.EditStatus == AnagramSolver.Contracts.WordEditStatus.DeleteDenied)
+{
+    <h3 style="color: red">You don't have enough credits to delete</h3>
+
+    <p>You can do these actions to get more searches:</p>
+    <ul>
+        <li>@Html.ActionLink("Add new word", "AddWord", "Home")</li>
+        <li>Go to @Html.ActionLink("Dictionary", "ReadDictionary", "WordRepository") and edit a word</li>
+    </ul>
+}
+
