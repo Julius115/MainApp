@@ -1,6 +1,4 @@
 ﻿using AnagramSolver.Contracts;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AnagramSolver.Services
@@ -11,39 +9,36 @@ namespace AnagramSolver.Services
         private readonly IAnagramSolver _anagramSolver;
         private readonly ILogger _logger;
         private readonly IRequestWordContract _requestWordContract;
-        private readonly IUserContract _userContract;
+        private readonly AnagramSolver.EF.CodeFirst.Contracts.IUserContract _userContract;
+        private readonly UserManagingService _userManagingService;
+
 
         // TODO: add implementation to interfaces to get id etc..
-        public AnagramsSearchService(ICachedWords cachedWords, IAnagramSolver anagramSolver, ILogger logger, IRequestWordContract requestWordContract, IUserContract userContract)
+        public AnagramsSearchService(ICachedWords cachedWords, IAnagramSolver anagramSolver, ILogger logger, IRequestWordContract requestWordContract, AnagramSolver.EF.CodeFirst.Contracts.IUserContract userContract,UserManagingService userManagingService)
         {
             _cachedWords = cachedWords;
             _anagramSolver = anagramSolver;
             _logger = logger;
             _requestWordContract = requestWordContract;
             _userContract = userContract;
+            _userManagingService = userManagingService;
         }
 
         public AnagramsSearchInfoModel GetAnagrams(string requestWord, string userIp)
         {
             var anagramsSearchInfoModel = new AnagramsSearchInfoModel();
 
-            if (!_userContract.CheckIfRegistered(userIp))
+            if (!_userManagingService.CheckIfRegistered(userIp))
             {
                 _userContract.SetUser(userIp);
             }
 
-            anagramsSearchInfoModel.isValidToSearch = _userContract.CheckIfValidToSearch(userIp);
+            anagramsSearchInfoModel.isValidToSearch = _userManagingService.CheckIfValidToSearch(userIp);
 
             if (!anagramsSearchInfoModel.isValidToSearch)
             {
                 return anagramsSearchInfoModel;
             }
-            // TODO: Implement
-            //bool validToSearch = _userContract.MinimiseCheckCount(userIp);
-            //if (!validToSearch)
-            //{
-            //    return null;
-            //}
 
             if (_cachedWords.CheckIfCached(requestWord))
             {

@@ -1,4 +1,4 @@
-﻿using AnagramSolver.Contracts;
+﻿using AnagramSolver.EF.CodeFirst.Contracts;
 using AnagramSolver.EF.CodeFirst.Models;
 using System;
 using System.Collections.Generic;
@@ -22,31 +22,23 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
             _em.SaveChanges();
         }
 
-        public bool CheckIfRegistered(string userIp)
+        public User GetUser(string userIp)
         {
-            return (_em.Users.Where(u => u.UserIp == userIp).Count() > 0);
+            return (_em.Users.Where(u => u.UserIp == userIp).FirstOrDefault());
         }
 
-        public bool CheckIfValidToSearch(string userIp)
+        public void RemoveOneSearch(string userIp)
         {
-            if (_em.Users.Where(u => u.UserIp == userIp).FirstOrDefault().SearchesLeft == 0)
-            {
-                return false;
-            }
-
             User user = _em.Users.Where(u => u.UserIp == userIp).FirstOrDefault();
             user.SearchesLeft--;
             _em.SaveChanges();
-
-            return true;
         }
 
-        public void GiveAdditionalSearch(string userIp)
+        public void GiveAdditionalSearch(User user)
         {
-            User user = _em.Users.Where(u => u.UserIp == userIp).FirstOrDefault();
+            //User user = _em.Users.Where(u => u.UserIp == userIp).FirstOrDefault();
             user.SearchesLeft++;
             _em.SaveChanges();
-
         }
     }
 }

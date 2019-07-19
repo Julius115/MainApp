@@ -9,7 +9,9 @@
 
 @foreach (string s in Model.Words)
 {
-    @Html.ActionLink(s, "Index", "Home", new { id = s }) <span>&nbsp;&nbsp;&nbsp;</span> @Html.ActionLink("Edit", "EditWord", "Home", new { originalWord = s}) 
+    
+<span style="display:inline-block; min-width:100px;"> @Html.ActionLink(s, "Index", "Home", new { id = s }) </span> <span>&nbsp;&nbsp;&nbsp;</span> @Html.ActionLink("Edit", "EditWord", "Home", new { originalWord = s}) 
+    
     <br />
 }
 <br />

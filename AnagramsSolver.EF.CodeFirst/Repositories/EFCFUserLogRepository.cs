@@ -22,7 +22,6 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
             userLog.UserId = _em.Users.Where(u => u.UserIp == userIp).Select(u => u.Id).FirstOrDefault();
             userLog.RequestDate = DateTime.Now;
             
-
             _em.UserLogs.Add(userLog);
             _em.SaveChanges();
         }
@@ -32,7 +31,6 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
             SearchInfoModel searchInfoModel = _em.UserLogs.Where(u => u.RequestWord.Word == word && (u.RequestDate.ToString("yyyy-MM-dd HH:mm:ss.fff") == date.ToString("yyyy-MM-dd HH:mm:ss.fff")))
                 .Select(u => new SearchInfoModel
                 {
-                    //UserIp = u.UserIp,
                     UserIp = u.User.UserIp,
                     RequestDate = u.RequestDate,
                     RequestWord = u.RequestWord.Word,

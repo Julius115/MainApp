@@ -8,26 +8,21 @@ namespace AnagramSolver.Services
 {
     public class DictionaryManagingService
     {
-        private readonly IUserContract _userContract;
         private readonly IWordRepository _wordRepository;
-        public DictionaryManagingService(IUserContract userContract, IWordRepository wordRepository)
+        private readonly UserManagingService _userManagingService;
+        public DictionaryManagingService(IWordRepository wordRepository, UserManagingService userManagingService)
         {
-            _userContract = userContract;
             _wordRepository = wordRepository;
+            _userManagingService = userManagingService;
         }
 
         public void AddWord(string inputWord, string userIp)
         {
-            //List<string> inputList = inputWord.Split().ToList();
-
             if (!_wordRepository.GetWordsDictionary().Contains(inputWord))
             {
                 _wordRepository.AddWord(inputWord);
-                _userContract.GiveAdditionalSearch(userIp);
-                //using (StreamWriter sw = new StreamWriter("zodynas.txt", true))
-                //{
-                //    sw.WriteLine(input);
-                //}
+                _userManagingService.GiveUserAdditionalSearch(userIp);
+                //_us.GiveAdditionalSearch(userIp);
             }
         }
 
@@ -41,7 +36,8 @@ namespace AnagramSolver.Services
                 wordEditInfoModel.OriginalWord = wordEditInfoModel.NewWord;
                 wordEditInfoModel.NewWord = null;
 
-                _userContract.GiveAdditionalSearch(userIp);
+                //_userContract.GiveAdditionalSearch(userIp);
+                _userManagingService.GiveUserAdditionalSearch(userIp);
             }
             else
             {
@@ -54,7 +50,7 @@ namespace AnagramSolver.Services
 
         public WordEditInfoModel DeleteWord(WordEditInfoModel wordEditInfoModel, string userIp)
         {
-            bool hasCreditsToDelete = _userContract.CheckIfValidToSearch(userIp);
+            bool hasCreditsToDelete = _userManagingService.CheckIfValidToSearch(userIp);/*_userContract.CheckIfValidToSearch(userIp);*/
 
             if (!hasCreditsToDelete)
             {

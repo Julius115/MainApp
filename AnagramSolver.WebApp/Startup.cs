@@ -46,8 +46,9 @@ namespace AnagramSolver.WebApp
             services.AddScoped<ILogger, EFCFUserLogRepository>();
             services.AddScoped<AnagramsSearchService, AnagramsSearchService>();
             services.AddScoped<IRequestWordContract, EFCFRequestWordRepository>();
-            services.AddScoped<IUserContract, EFCFUserRepository>();
+            services.AddScoped<AnagramSolver.EF.CodeFirst.Contracts.IUserContract, EFCFUserRepository>();
             services.AddScoped<DictionaryManagingService, DictionaryManagingService>();
+            services.AddScoped<UserManagingService, UserManagingService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

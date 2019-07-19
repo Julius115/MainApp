@@ -21,6 +21,7 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly AnagramsSearchService _anagramsSearchService;
         private readonly DictionaryManagingService _dictionaryManagaingService;
 
+
         public HomeController(IAnagramSolver anagramSolver, IWordRepository wordRepository, IDatabaseManager databaseManager, ILogger logger, AnagramsSearchService anagramsSearchService, DictionaryManagingService dictionaryManagingService)
         {
             _anagramSolver = anagramSolver;

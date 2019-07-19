@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnagramsSolver.EF.CodeFirst\AnagramSolver.EF.CodeFirst.csproj" />
     <ProjectReference Include="..\Interfaces.AnagramSolver\AnagramSolver.Contracts.csproj" />
   </ItemGroup>
 
