@@ -1,8 +1,4 @@
 ﻿using AnagramSolver.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AnagramSolver.Services
 {
@@ -22,7 +18,6 @@ namespace AnagramSolver.Services
             {
                 _wordRepository.AddWord(inputWord);
                 _userManagingService.GiveUserAdditionalSearch(userIp);
-                //_us.GiveAdditionalSearch(userIp);
             }
         }
 
@@ -36,7 +31,6 @@ namespace AnagramSolver.Services
                 wordEditInfoModel.OriginalWord = wordEditInfoModel.NewWord;
                 wordEditInfoModel.NewWord = null;
 
-                //_userContract.GiveAdditionalSearch(userIp);
                 _userManagingService.GiveUserAdditionalSearch(userIp);
             }
             else
@@ -50,7 +44,7 @@ namespace AnagramSolver.Services
 
         public WordEditInfoModel DeleteWord(WordEditInfoModel wordEditInfoModel, string userIp)
         {
-            bool hasCreditsToDelete = _userManagingService.CheckIfValidToSearch(userIp);/*_userContract.CheckIfValidToSearch(userIp);*/
+            bool hasCreditsToDelete = _userManagingService.CheckIfValidToSearch(userIp);
 
             if (!hasCreditsToDelete)
             {

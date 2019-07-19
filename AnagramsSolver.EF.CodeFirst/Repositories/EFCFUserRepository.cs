@@ -36,7 +36,6 @@ namespace AnagramSolver.EF.CodeFirst.Repositories
 
         public void GiveAdditionalSearch(User user)
         {
-            //User user = _em.Users.Where(u => u.UserIp == userIp).FirstOrDefault();
             user.SearchesLeft++;
             _em.SaveChanges();
         }
