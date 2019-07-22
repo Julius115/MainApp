@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AnagramSolver.EF.CodeFirst.Repositories
 {
-    public class EFCFUserRepository : IUserContract
+    public class EFCFUserRepository : IUserRepository
     {
         private readonly AnagramsDbCfContext _em;
         public EFCFUserRepository(AnagramsDbCfContext dbContext)

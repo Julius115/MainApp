@@ -9,12 +9,12 @@ namespace AnagramSolver.Services
         private readonly IAnagramSolver _anagramSolver;
         private readonly ILogger _logger;
         private readonly IRequestWordContract _requestWordContract;
-        private readonly AnagramSolver.EF.CodeFirst.Contracts.IUserContract _userContract;
-        private readonly UserManagingService _userManagingService;
+        private readonly AnagramSolver.EF.CodeFirst.Contracts.IUserRepository _userContract;
+        private readonly IUserManagingService _userManagingService;
 
 
         // TODO: add implementation to interfaces to get id etc..
-        public AnagramsSearchService(ICachedWords cachedWords, IAnagramSolver anagramSolver, ILogger logger, IRequestWordContract requestWordContract, AnagramSolver.EF.CodeFirst.Contracts.IUserContract userContract,UserManagingService userManagingService)
+        public AnagramsSearchService(ICachedWords cachedWords, IAnagramSolver anagramSolver, ILogger logger, IRequestWordContract requestWordContract, AnagramSolver.EF.CodeFirst.Contracts.IUserRepository userContract,IUserManagingService userManagingService)
         {
             _cachedWords = cachedWords;
             _anagramSolver = anagramSolver;

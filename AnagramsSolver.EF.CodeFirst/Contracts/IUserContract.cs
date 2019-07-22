@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnagramSolver.EF.CodeFirst.Contracts
 {
-    public interface IUserContract
+    public interface IUserRepository
     {
         void SetUser(string userIp);
 

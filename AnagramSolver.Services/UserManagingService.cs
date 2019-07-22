@@ -1,4 +1,5 @@
-﻿using AnagramSolver.EF.CodeFirst.Contracts;
+﻿using AnagramSolver.Contracts;
+using AnagramSolver.EF.CodeFirst.Contracts;
 using AnagramSolver.EF.CodeFirst.Models;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using System.Text;
 
 namespace AnagramSolver.Services
 {
-    public class UserManagingService
+    public class UserManagingService :IUserManagingService
     {
-        private readonly IUserContract _userContract;
+        private readonly IUserRepository _userContract;
 
-        public UserManagingService (IUserContract userContract)
+        public UserManagingService (IUserRepository userContract)
         {
             _userContract = userContract;
         }

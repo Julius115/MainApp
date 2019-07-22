@@ -62,14 +62,6 @@ namespace AnagramSolver.WebApp.Controllers
                 Response.Cookies.Append("inputWord", id, options);
             }
 
-            // rename service to anagramSearchService.GetAnagrams()
-            // has to return new model with bools: cannotSearch;
-            //List<string> anagrams = _cachedWordsService.CacheWords(id, HttpContext.Connection.LocalIpAddress.ToString());
-            //if (anagramModel.cannotSearch)
-            //{
-            //    return View("Not allowed to search, offer to insert word to dictionary");
-            //}
-
             AnagramsSearchInfoModel anagramsSearchResult = _anagramsSearchService.GetAnagrams(id, HttpContext.Connection.LocalIpAddress.ToString());
 
             if (!anagramsSearchResult.isValidToSearch)
